@@ -14,5 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('app');
+    return view('main.main');
+});
+Route::get('/{any}', function ($id) {
+    
+    return view('main.main');
 });

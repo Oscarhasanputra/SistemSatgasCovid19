@@ -5,7 +5,12 @@
  */
 
 require('./bootstrap');
-
+import VueRouter from "vue-router"
+import VueAxios from "vue-axios"
+import axios from "axios"
+import routers from "./router.js"
+import App from "./components/HomeComponent"
+import Test from "./components/TestComponent"
 window.Vue = require('vue').default;
 
 /**
@@ -19,14 +24,15 @@ window.Vue = require('vue').default;
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
+Vue.use(VueRouter)
+Vue.use(VueAxios,axios)
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
+const router= new VueRouter(routers)
 const app = new Vue({
     el: '#app',
+    router:router
 });

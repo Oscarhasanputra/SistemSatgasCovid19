@@ -12,7 +12,9 @@ use App\Models\Pasien;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+// Route::get("/",function(){
+//     return['message'=>"hello"];
+// });
 Route::get('/', function () {
     return view('main.main');
 });

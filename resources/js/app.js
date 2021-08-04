@@ -8,9 +8,10 @@ require('./bootstrap');
 import VueRouter from "vue-router"
 import VueAxios from "vue-axios"
 import axios from "axios"
+import VueSweetalert2 from "vue-sweetalert2";
 import routers from "./router.js"
-import App from "./components/HomeComponent"
-import Test from "./components/TestComponent"
+import Vue from "vue";
+import "sweetalert2/dist/sweetalert2.min.css";
 window.Vue = require('vue').default;
 
 /**
@@ -26,6 +27,8 @@ window.Vue = require('vue').default;
 
 Vue.use(VueRouter)
 Vue.use(VueAxios,axios)
+Vue.use(VueSweetalert2)
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -36,3 +39,4 @@ const app = new Vue({
     el: '#app',
     router:router
 });
+

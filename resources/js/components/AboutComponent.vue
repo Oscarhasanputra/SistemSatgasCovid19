@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="hero-v1">
+      <div class="hero-v1">
       <div class="container">
         <div class="row align-items-center">
           <div class="col-lg-6 mr-auto text-center text-lg-left">

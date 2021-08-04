@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Models\Pasien;
 /*
 |--------------------------------------------------------------------------
 | Web Routes

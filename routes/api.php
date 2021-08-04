@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\Api\OxygenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\OxymeterController;
+use App\Http\Controllers\Api\PasienController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('/oxymeter',[OxymeterController::class,"save"]);
+Route::post('/oxygen', [OxygenController::class,"save"]);
+Route::get("/checkpasien",[PasienController::class,"checking"]);

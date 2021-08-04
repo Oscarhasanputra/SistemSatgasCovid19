@@ -1,21 +1,18 @@
 <template>
     <div>
-        <div class="hero-v1">
-      <div class="container">
-        <div class="row align-items-center justify-content-center">
-          <div class="col-lg-6 text-center mx-auto">
-           
-            <h1 class="heading mb-3">Form Relawan Donor Plasma</h1>
-            <p class="mb-5"></p>
+        <div class="hero-v2 ">
+        <div class="container">
+          <div class="row align-items-center justify-content-center">
+            <div class="col-lg-6 text-center mx-auto">
+              <h1 class="heading mb-3 mt-5">Form Relawan Donor Plasma</h1>
+            </div>
           </div>
         </div>
-      </div>
     </div>
-
-
     <!-- MAIN -->
 
     <div class="site-section">
+     
       <div class="container">
         <div class="row">
           <div class="col-md-8 blog-content">

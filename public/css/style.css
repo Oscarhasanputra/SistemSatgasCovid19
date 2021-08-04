@@ -616,6 +616,14 @@ body:after {
     margin-top: -200px;
     position: absolute; }
 
+    .hero-v2 {
+      padding: 5rem 0 0 0;
+      overflow: hidden; }
+      .hero-v2 .heading {
+        font-weight: 900;
+        color: #6f42c1;
+        font-size: 30px; }
+
 .slide-item, .cover {
   background-size: cover;
   background-position: center;

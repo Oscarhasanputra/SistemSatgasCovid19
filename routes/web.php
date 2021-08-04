@@ -18,11 +18,11 @@ use App\Models\Pasien;
 Route::get('/', function () {
     return view('main.main');
 });
-Route::get('/{any}', function ($id) {
+// Route::get('/{any}', function ($id) {
     
-    return view('main.main');
-});
+//     return view('main.main');
+// });
 
 Route::get('/admin', function () {
-    return view('admin.main');
+    return view('admin.pasien');
 });

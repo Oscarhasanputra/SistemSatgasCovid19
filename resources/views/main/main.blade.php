@@ -22,7 +22,6 @@
         <div class="site-mobile-menu-body"></div>
       </div>
   
-      
       <header class="site-navbar light js-sticky-header site-navbar-target" role="banner">
   
         <div class="container">
@@ -66,8 +65,6 @@
         </div>
   
       </header>
-  
-      
   
       
       <router-view></router-view>

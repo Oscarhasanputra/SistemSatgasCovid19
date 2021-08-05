@@ -10,7 +10,6 @@
       </div>
     </div>
   
-  
     <div class="site-wrap" id="app">
   
       <div class="site-mobile-menu site-navbar-target">
@@ -71,7 +70,6 @@
     
       @extends("main.footer-content")
   
-    
     
     </div> <!-- .site-wrap -->
     

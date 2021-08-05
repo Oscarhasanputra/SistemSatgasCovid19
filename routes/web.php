@@ -24,5 +24,32 @@ Route::get('/', function () {
 // });
 
 Route::get('/admin', function () {
+    return view('admin.admin');
+});
+
+Route::get('/konsultasi', function () {
+    return view('admin.konsultasi');
+});
+Route::get('/pasien', function () {
     return view('admin.pasien');
+});
+
+Route::get('/obat', function () {
+    return view('admin.obat');
+});
+Route::get('/dokter', function () {
+    return view('admin.dokter');
+});
+Route::get('/oxy', function () {
+    return view('admin.oxy');
+});
+Route::get('/pinjamoxy', function () {
+    return view('admin.pinjamoxy');
+});
+Route::get('/donorplasma', function () {
+    return view('admin.donorplasma');
+});
+
+Route::get('/konsuldokter', function () {
+    return view('admin.konsuldokter');
 });

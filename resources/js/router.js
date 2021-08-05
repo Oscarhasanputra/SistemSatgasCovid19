@@ -4,6 +4,7 @@ import OxygenComponent from "./components/OxygenComponent"
 import KonsultasiComponent from "./components/KonsultasiComponent"
 import DonorPlasmaComponent from "./components/DonorPlasmaComponent"
 import AboutComponent from "./components/AboutComponent"
+import PasienComponent from "./components/PasienComponent.vue"
 export default{
     mode:'history',
     routes:[
@@ -37,6 +38,11 @@ export default{
             name:"about",
             path:"/about",
             component: AboutComponent
+        },
+        {
+            name:"pasien",
+            path:"/pasien",
+            component: PasienComponent
         }
     ]
 }

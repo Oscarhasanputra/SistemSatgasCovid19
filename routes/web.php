@@ -49,7 +49,11 @@ Route::get('/pinjamoxy', function () {
 Route::get('/donorplasma', function () {
     return view('admin.donorplasma');
 });
+Route::get('/login', function () {
+    return view('admin.login');
+});
 
+//untuk login dokter
 Route::get('/konsuldokter', function () {
     return view('admin.konsuldokter');
 });

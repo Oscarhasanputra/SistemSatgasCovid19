@@ -35,7 +35,7 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-5 d-none d-lg-block"><img src="/images/logo.png" class="ml-5 col-lg-10" height="350" alt=""></div>
+                            <div class="col-lg-5 d-none d-lg-block"><img src="/images/logo.jpg" class="ml-5 mt-5 col-lg-10" height="250" alt=""></div>
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">

@@ -27,6 +27,7 @@
                 <a class="collapse-item" href="{{url('obat')}}">Master Obat</a>
                 <a class="collapse-item" href="{{url('dokter')}}">Master Dokter</a>
                 <a class="collapse-item" href="{{url('oxy')}}">Master Oxy</a>
+                <a class="collapse-item" href="{{url('berita')}}">Master Berita</a>
             </div>
         </div>
     </li>

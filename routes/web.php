@@ -49,6 +49,9 @@ Route::get('/pinjamoxy', function () {
 Route::get('/donorplasma', function () {
     return view('admin.donorplasma');
 });
+Route::get('/berita', function () {
+    return view('admin.berita');
+});
 Route::get('/login', function () {
     return view('admin.login');
 });

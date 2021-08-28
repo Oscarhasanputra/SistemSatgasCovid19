@@ -15,11 +15,19 @@ class Pasien extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['IDPasien','NamaPasien','NoHP','Alamat','Usia','JenisKelamin'
-    ,'GolonganDarah','TanggalLahir','FotoKTP','Penanggung','NoHPPenanggung','RhesusDarah'
+    protected $fillable = ['IDPasien','NamaPasien','NoHP','Alamat',
+    'Usia','JenisKelamin','Agama','Profesi','Berat'
+    ,'GolonganDarah','TanggalLahir','FotoKTP',
+    'Penanggung','NoHPPenanggung','RhesusDarah'
     ,'IDPenanggung','StatusPenanggung'];
     
     public $incrementing = false;
     
-   
+    public function konsultasi(){
+        return $this->hasMany(Telemedicine::class,"IDPasien");
+    }
+
+    public function pinjam(){
+        return $this->hasMany(Pinjam::class,"IDPasien");
+    }
 }

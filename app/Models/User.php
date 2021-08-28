@@ -9,35 +9,27 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $table="msuser";
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $primaryKey = 'IDUser';
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public $timestamps = false;
+
+    protected $fillable = ['Username','Nama','Password','NoHP','Role'];
+
+    public $incrementing = true;
+
+    public function test(){
+        return true;
+    }
+    public function getAuthPassword()
+    {
+        return $this->Password;
+    }
+    public function getAuthIdentifier()
+    {
+        return $this->Username;
+    }
 }

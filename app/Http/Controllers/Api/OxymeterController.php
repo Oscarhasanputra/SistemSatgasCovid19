@@ -15,19 +15,18 @@ use App\Models\Pinjam;
 class OxymeterController extends Controller
 {
     //
-    static $fieldPasien=['IDPasien','NamaPasien','NoHP','Alamat','Usia','JenisKelamin'
-    ,'GolonganDarah','TanggalLahir','FotoKTP','Penanggung','NoHPPenanggung'
-    ,'IDPenanggung','StatusPenanggung'];
 
     public function save(Request $request){
         // var_dump($request);
         $date=Carbon::now();
         $data=$request->all();
+        $model= new Pasien();
+        $fieldPasien= $model->getFillable();
         // return $request->file("FotoKTP");
         // return $request->file("FotoKTP");
    
         
-        $dataPasien=array_intersect_key($data,array_flip(self::$fieldPasien));
+        $dataPasien=array_intersect_key($data,array_flip($fieldPasien));
         // return $dataPasien;
 
         //cari data pasien atau buat data pasien baru
@@ -39,14 +38,13 @@ class OxymeterController extends Controller
         $savedDataPasien=[];
         try {
             $savedDataPasien=Pasien::findOrFail($dataPasien['IDPasien']);
-
+            $savedDataPasien->update($dataPasien);
         } catch (\Throwable $th) {
             //throw $th;
             $savedDataPasien=Pasien::create($dataPasien);
         }
         //check data transaksi pinjam dari pasien
         
-        $dataTransaksiPinjam=array_diff_key($data,array_flip(self::$fieldPasien));
         $dataPinjamPasien=Pinjam::where("IDPasien","=",$savedDataPasien->IDPasien)
                             ->where("Status","=","Menunggu")
                             ->where("JenisPinjaman","=","Oxymeter")
@@ -55,7 +53,8 @@ class OxymeterController extends Controller
         if($dataPinjamPasien->count()>0){
             return response(['message'=>"Masih terdapat Pengajuan lain dalam proses, tidak dapat mengajukan kembali"],Response::HTTP_BAD_REQUEST);
         }
-
+        $dataTransaksiPinjam=array_diff_key($data,array_flip($fieldPasien));
+        
         //
 
         try {
@@ -76,6 +75,7 @@ class OxymeterController extends Controller
 
         //simpan data peminjaman pasien
         $dataTransaksiPinjam['IDPasien']=$savedDataPasien->IDPasien;
+        $dataTransaksiPinjam['created_at']=$date;
         Pinjam::create($dataTransaksiPinjam);
         
         return ['message'=>"Pengajuan Form Peminjaman Oxymeter berhasil dilakukan"];

@@ -16,7 +16,11 @@ class Pinjam extends Model
 
     protected $fillable = ['IDPasien','IDOxy','TglPinjam','TglKembali','IDAdmin'
     ,'Sumber','Gejala','Saturasi','TanggalSwab','BuktiSwab','KonsumsiObat','PernahBerobat'
-    ,'KetersediaanTabung','BuktiSaturasi','JenisPinjaman'];
+    ,'KetersediaanTabung','BuktiSaturasi','JenisPinjaman','AsalPinjam','created_at'];
     
     public $incrementing = false;
+
+    public function pasien(){
+        return $this->belongsTo(Pasien::class,"IDPasien");
+    }
 }

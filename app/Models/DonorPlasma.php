@@ -5,15 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Admin extends Model
+class DonorPlasma extends Model
 {
     use HasFactory;
-    protected $table="msadmin";
+    protected $table="trdonorplasma";
 
-    protected $primaryKey = 'IDAdmin';
+    protected $primaryKey = 'IDDonor';
 
     public $timestamps = false;
 
-    protected $fillable = ['NamaAdmin','Password'];
+    protected $fillable = ['IDPasien','IDAdmin','TanggalPositif','TanggalSembuh','Status'];
+    
     public $incrementing = true;
 }

@@ -20,7 +20,6 @@ class Request {
 
     static get(url,data={}){
         return new Promise((res,rej)=>{
-            
             axios.get(url,{params:data}).then(response=>{
                 if(response.data.message)
                     this.messageHandling(response.data,false).then(()=>{
@@ -38,9 +37,10 @@ class Request {
             })
         })
     }
-    static post(url,data={}){
+    static post(url,data={},config={}){
+        
         return new Promise((res,rej)=>{
-            axios.post(url,data,{headers:{ 'Content-Type': 'multipart/form-data'}}).then(response=>{
+            axios.post(url,data,config).then(response=>{
                 if(response.data.message)
                 this.messageHandling(response.data,false).then(()=>{
                     res(response)
@@ -58,9 +58,9 @@ class Request {
             })
         })
     }
-    static put(url,id,data={}){
+    static put(url,data={}){
         return new Promise((res,rej)=>{
-            axios.put(`${url}/${id}`,data).then(response=>{
+            axios.put(`${url}`,data).then(response=>{
                 if(response.data.message)
                 this.messageHandling(response.data,false).then(()=>{
                     res(response)
@@ -77,9 +77,9 @@ class Request {
             })
         })
     }
-    static delete(url,id,data={}){
+    static delete(url,data={}){
         return new Promise((res,rej)=>{
-            axios.delete(`${url}/${id}`,{data:data}).then(response=>{
+            axios.delete(`${url}`,{data:data}).then(response=>{
                 if(response.data.message)
                 this.messageHandling(response.data,false).then(()=>{
                     res(response)

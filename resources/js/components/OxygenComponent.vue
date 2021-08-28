@@ -18,6 +18,26 @@
       <div class="container">
         <div class="row">
           <div class="col-md-8 blog-content">
+            <div class="row justify-content-between">
+                <div class="form-group col-8">
+                  <label for="hp">Nomor Whatsapp / HP*</label>
+                  <input
+                    :disabled="disabled.NoHP"
+                    type="number"
+                    name="Nomor HP"
+                    class="form-control required"
+                    id="hp"
+                    v-model="formPasien.NoHP"
+                  />
+                </div>
+
+                <button
+                  class="btn btn-primary col-3 align-self-center"
+                  @click="checking()"
+                >
+                  Check Data Pasien
+                </button>
+              </div>
               <div class="form-group">
                 <label for="darimana"
                   >Dapat info program kerja sama peminjaman tabung oksigen ini
@@ -38,7 +58,7 @@
                   class="form-control required"
                   id="nama"
                   name="Nama Pasien"
-                  :disabled="disabled"
+                  :disabled="disabled.NamaPasien"
                   v-model="formPasien.NamaPasien"
                 />
               </div>
@@ -50,7 +70,7 @@
                   id="usia"
                   name="Usia Pasien"
 
-                  :disabled="disabled"
+                  :disabled="disabled.Usia"
                   v-model="formPasien.Usia"
                 />
               </div>
@@ -64,7 +84,7 @@
                     id="exampleRadios1"
                     value="Laki-Laki"
 
-                    :disabled="disabled"
+                    :disabled="disabled.JenisKelamin"
                     v-model="formPasien.JenisKelamin"
                   />
                   <label class="form-check-label" for="exampleRadios1">
@@ -79,7 +99,7 @@
                     id="exampleRadios2"
                     value="Perempuan"
 
-                    :disabled="disabled"
+                    :disabled="disabled.JenisKelamin"
                     v-model="formPasien.JenisKelamin"
                   />
                   <label class="form-check-label" for="exampleRadios2">
@@ -96,7 +116,7 @@
                 <textarea
                   name="Alamat"
 
-                  :disabled="disabled"
+                  :disabled="disabled.Alamat"
                   id="alamat"
                   cols="30"
                   rows="5"
@@ -105,26 +125,7 @@
                 ></textarea>
               </div>
 
-              <div class="row justify-content-between">
-                <div class="form-group col-8">
-                  <label for="hp">Nomor Whatsapp / HP*</label>
-                  <input
-                    :disabled="disabled"
-                    type="number"
-                    name="Nomor HP"
-                    class="form-control required"
-                    id="hp"
-                    v-model="formPasien.NoHP"
-                  />
-                </div>
-
-                <button
-                  class="btn btn-primary col-3 align-self-center"
-                  @click="checking()"
-                >
-                  Check Data Pasien
-                </button>
-              </div>
+              
               <div class="form-group">
                 <label for="tanggallahir">Tanggal Lahir *</label>
                 <input
@@ -132,7 +133,7 @@
                   class="form-control required"
                   name="Tanggal Lahir"
                   id="tanggallahir"
-                  :disabled="disabled"
+                  :disabled="disabled.TanggalLahir"
                   v-model="formPasien.TanggalLahir"
                 />
               </div>
@@ -144,12 +145,12 @@
                   :class="'form-control '+(disabled?'':'required')"
                   id="ktp"
                   accept="image/png, image/jpeg"
-                  :disabled="disabled"
+                  :disabled="disabled.FotoKTP"
                   data-message="Foto KTP belum diupload"
                   @change="uploadKTP"
                 />
               </div>
-              <img v-if="disabled" :src="'/storage/'+formPasien.FotoKTP" height="100" width="100">
+              <img v-if="disabled.FotoKTP" :src="'/storage/'+formPasien.FotoKTP" height="100" width="100">
 
 
               <div class="form-group">
@@ -160,6 +161,7 @@
                   type="text"
                   class="form-control"
                   id="Penanggung"
+                  :disabled="disabled.Penanggung"
                   v-model="formPasien.Penanggung"
                 />
               </div>
@@ -170,6 +172,7 @@
                 >
                 <input
                   type="number"
+                  :disabled="disabled.NoHPPenanggung"
                   class="form-control"
                   id="WaPenanggung"
                   v-model="formPasien.NoHPPenanggung"
@@ -181,7 +184,8 @@
                 <select
                   id="cars"
                   name="Status Penanggung Jawab"
-                  class="form-control required"
+                  class="form-control"
+                  :disabled="disabled.StatusPenanggung"
                   v-model="formPasien.StatusPenanggung"
                 >
                   <option value="OrangTua" selected>Orang Tua</option>
@@ -304,7 +308,7 @@
                   class="form-control required"
                   name="Golongan Darah"
                   v-model="formPasien.GolonganDarah"
-                  :disabled="disabled"
+                  :disabled="disabled.GolonganDarah"
                 >
                   <option value="" selected>-- Pilih --</option>
                   <option value="A">A</option>
@@ -331,7 +335,9 @@ import {isValidated} from "../utilities/validate"
 export default {
   data() {
     return {
-      disabled: false,
+      disabled: {
+
+      },
       formPinjam: {
         PernahBerobat: "Ya",
       },
@@ -348,14 +354,19 @@ export default {
       const form = new FormData();
       // const test= objectToFor
       for (let key in this.formPasien) {
-        form.append(key, this.formPasien[key]);
+        const val=this.formPasien[key];
+        if(val)
+        form.append(key, val);
       }
       for (let key in this.formPinjam) {
         form.append(key, this.formPinjam[key]);
       }
       if (isValidated()) {
-        Request.post("/api/oxygen", form)
-          .then((respon) => {})
+        Request.post("/api/oxygen", form,{headers:{ 'Content-Type': 'multipart/form-data'}})
+          .then((respon) => {
+
+            this.$router.go(0)
+          })
           .catch((err) => {});
       }
     },
@@ -373,17 +384,18 @@ export default {
       this.formPinjam.BuktiSaturasi = file;
     },
     checking: function () {
+      console.log(this.formPasien);
+      console.log(this.formPasien.NoHP);
       Request.get("/api/checkpasien", {
         IDPasien: "PSN" + this.formPasien.NoHP,
       })
         .then((response) => {
           const data = response.data.DataPasien;
           this.formPasien = data;
-          this.disabled = true;
+          this.disabled = {...data};
         })
         .catch((err) => {
-          console.log(err.response);
-          this.disabled = false;
+          this.disabled = {};
         });
     },
   },

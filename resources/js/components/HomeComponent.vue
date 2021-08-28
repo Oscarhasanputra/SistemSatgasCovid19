@@ -6,20 +6,22 @@
           <div class="col-lg-6 mr-auto text-center text-lg-left">
             <span class="d-block subheading">Peduli Covid-19</span>
             <h1 class="heading mb-3">
-              Satgas Covid-19 Masyarakat Buddhist Banten
+              Satgas Covid-19 Masyarakat Buddhis Banten
             </h1>
+            <p class="">
+              Ulurkan Tangan, Satukan Hati. 
+            </p>
             <p class="mb-5">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel a,
-              nulla incidunt eaque sit praesentium porro consectetur optio!
+              sama-sama kita merangkul seksama yang membutuhkan.
             </p>
             <p class="mb-4">
-              <a href="#" class="btn btn-primary">Yuk Konsul</a>
+              <router-link to="/konsultasi" class="btn btn-primary">Yuk Konsul</router-link>
             </p>
           </div>
           <div class="col-lg-6">
             <figure class="illustration">
               <img
-                src="images/illustration.png"
+                src="images/logo-home.jpeg"
                 alt="Image"
                 class="img-fluid"
               />
@@ -36,39 +38,45 @@
       <div class="container">
         <div class="row mb-3">
           <div class="col-lg-7 text-center mx-auto">
-            <h2 class="section-heading">Statistik Virus Corona</h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet,
-              voluptate!
-            </p>
+            <h2 class="section-heading">Statistik Virus Corona Indonesia</h2>
+           
           </div>
         </div>
         <div class="row">
-          <div class="col-lg-4">
+          <div class="col-lg-3 col-6 mb-5 mb-lg-0 ">
             <div class="data">
               <span class="icon text-primary">
                 <span class="flaticon-virus"></span>
               </span>
-              <strong class="d-block number">14,112,077</strong>
-              <span class="label">Kasus Aktif</span>
+              <strong class="d-block number">{{covid.positif && covid.positif.toLocaleString()}}</strong>
+              <span class="label">Terkonfirmasi</span>
             </div>
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-3 col-6 mb-5 mb-lg-0 ">
             <div class="data">
               <span class="icon text-primary">
                 <span class="flaticon-virus"></span>
               </span>
-              <strong class="d-block number">595,685</strong>
-              <span class="label">Meninggal</span>
+              <strong class="d-block number">{{covid.dirawat && covid.dirawat.toLocaleString()}}</strong>
+              <span class="label">Aktif</span>
             </div>
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-3 col-6 mb-5 mb-lg-0 ">
             <div class="data">
               <span class="icon text-primary">
                 <span class="flaticon-virus"></span>
               </span>
-              <strong class="d-block number">8,397,665</strong>
+              <strong class="d-block number">{{covid.sembuh && covid.sembuh.toLocaleString()}}</strong>
               <span class="label">Sembuh</span>
+            </div>
+          </div>
+          <div class="col-lg-3 col-6 mb-5 mb-lg-0 ">
+            <div class="data">
+              <span class="icon text-primary">
+                <span class="flaticon-virus"></span>
+              </span>
+              <strong class="d-block number">{{covid.meninggal && covid.meninggal.toLocaleString()}}</strong>
+              <span class="label">Meninggal</span>
             </div>
           </div>
         </div>
@@ -80,10 +88,7 @@
         <div class="row mb-5">
           <div class="col-lg-7 mx-auto text-center">
             <h2 class="mb-4 section-heading">Berita &amp; Artikel</h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex
-              officia quas, modi sit eligendi numquam!
-            </p>
+           
           </div>
         </div>
 
@@ -152,8 +157,40 @@
 </template>
 
 <script>
+import axios from "axios"
 export default {
+  data(){
+    return{
+      covid:{}
+    }
+  },
   mounted() {
+    // console.log()
+    // fetch({url:"https://covid19.mathdro.id/api/countries/idn/confirmed"}).then(res=>{
+    //   console.log(res)
+    // })
+    // axios.defaults.headers={}
+
+    // console.log(axios.defaults.headers)
+    // axios.defaults.headers['Accept']="*/*"
+    // axios.defaults.headers['Accept-Encoding']="gzip, deflate, br"
+    // fetch("http://api.kawalcorona.com/indonesia",{mode:"no-cors"}).then(async res=>{
+    //   const data= await res.text()
+    //   console.log(data);
+    //   })
+    // delete axios.defaults.headers.common['X-Requested-With']
+ 
+    axios.get("https://apicovid19indonesia-v2.vercel.app/api/indonesia").then(res=>{
+      // this.covid=res.data[0];
+      // console.log(this.covid)
+      this.covid=res.data;
+    }).catch(err=>{
+      // console.log(err.response)
+    })
+    // this.axios.get("https://covid19.mathdro.id/api/countries/idn/confirmed").then(res=>{
+    //   console.log("request re")
+    //   console.log(res.data)
+    // }).catch(err=>{})
     console.log("Component mounted.");
   },
 };

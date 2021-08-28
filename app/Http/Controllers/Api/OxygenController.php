@@ -3,24 +3,30 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Oxygen;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Pasien;
 use App\Models\Pinjam;
+use Auth;
 
 class OxygenController extends Controller
 {
-    static $fieldPasien=['IDPasien','NamaPasien','NoHP','Alamat','Usia','JenisKelamin'
-    ,'GolonganDarah','TanggalLahir','FotoKTP','Penanggung','NoHPPenanggung'
-    ,'IDPenanggung','StatusPenanggung'];
 
+    public function getDataOxy(){
+        return Pinjam::with("pasien")->get();
+    }
+   
     public function save(Request $request){
        
         $date=Carbon::now();
         $data=$request->all();
-        $dataPasien=array_intersect_key($data,array_flip(self::$fieldPasien));
+
+        $model= new Pasien();
+        $fieldPasien= $model->getFillable();
+        $dataPasien=array_intersect_key($data,array_flip($fieldPasien));
         
         //cari data pasien atau buat data pasien baru
         $dataPasien['IDPasien']="PSN{$dataPasien['NoHP']}";
@@ -31,15 +37,14 @@ class OxygenController extends Controller
         $savedDataPasien=[];
         try {
             $savedDataPasien=Pasien::findOrFail($dataPasien['IDPasien']);
-
+            $savedDataPasien->update($dataPasien);
         } catch (\Throwable $th) {
             //throw $th;
             $savedDataPasien=Pasien::create($dataPasien);
         }
         //check data transaksi pinjam dari pasien
         
-        $dataTransaksiPinjam=array_diff_key($data,array_flip(self::$fieldPasien));
-        $dataPinjamPasien=Pinjam::where("IDPasien","=",$savedDataPasien->IDPasien)
+         $dataPinjamPasien=Pinjam::where("IDPasien","=",$savedDataPasien->IDPasien)
                             ->where("Status","=","Menunggu")
                             ->where("JenisPinjaman","=","Oxygen")
                             ->get();
@@ -47,7 +52,8 @@ class OxygenController extends Controller
         if($dataPinjamPasien->count()>0){
             return response(['message'=>"Masih terdapat Pengajuan lain dalam proses, tidak dapat mengajukan kembali"],Response::HTTP_BAD_REQUEST);
         }
-
+        $dataTransaksiPinjam=array_diff_key($data,array_flip($fieldPasien));
+       
         //
 
         try {
@@ -69,6 +75,7 @@ class OxygenController extends Controller
 
         //simpan data peminjaman pasien
         $dataTransaksiPinjam['IDPasien']=$savedDataPasien->IDPasien;
+        $dataTransaksiPinjam['created_at']=$date;
         Pinjam::create($dataTransaksiPinjam);
         
         return ['message'=>"Pengajuan Form Peminjaman Oxymeter berhasil dilakukan"];
@@ -89,5 +96,88 @@ class OxygenController extends Controller
             throw $th;
         }
         return $dataTransaksiPinjam;
+    }
+
+    public function saveDataOxy(Request $request){
+        $date= Carbon::now();
+        $data= $request->all();
+        $data['TglInsert']=$date;
+        $data['UserInsert']=Auth::guard("admin")->user()->IDUser;
+        // return $data;
+        try {
+            //code...
+            Oxygen::create($data);
+        } catch (\Throwable $th) {
+            //throw $th;
+            throw $th;
+            // return response(['message'=>'Terjadi Kesalahan dalam menyimpan Data Oxygen'],Response::HTTP_CONFLICT);
+        }
+        return ['message'=>"Data Oxygen berhasil ditambahkan"];
+        // Oxygen::create()
+    }
+
+    public function getAllData(){
+        return Oxygen::all();
+    }
+    public function updateData($id,$data){
+        try {
+            //code...
+            Oxygen::findOrFail($id)->update($data);
+        } catch (\Throwable $th) {
+            //throw $th;
+            throw $th;
+        }
+    }
+    public function updateDataOxy($id,Request $request){
+        $data=$request->all();
+        $date= Carbon::now();
+        $data['TglUpdate']=$date;
+        $data['UserUpdate']=Auth::guard('admin')->user()->IDUser;
+        // return $data;
+       try {
+           $this->updateData($id,$data);
+           //code...
+       } catch (\Throwable $th) {
+           throw $th;
+        //    return response(['message'=>'Terjadi Kesalahan dalam melakukan perubahan Data Oxygen'],Response::HTTP_CONFLICT);
+   
+       }
+        return ['message'=>'Data Oxygen Berhasil diubah'];
+    }
+
+    public function updateDataPinjam($id,Request $request){
+        $data=$request->all();
+        $date= Carbon::now();
+        // return $data;
+        try {
+            //code...
+            // return $request->all();
+            Pinjam::findOrFail($id)->update($data);
+            
+            if($request->Status=="Dipinjamkan"){
+
+                $Oxy=Oxygen::where("Status","=","Tersedia")->first();
+                $Oxy->update(['Status'=>'Terpakai']);
+            }
+
+                // $this->updateData($Oxy->IDOxy,['Status'=>"Terpakai"]);
+        } catch (\Throwable $th) {
+            throw $th;
+            return response(['message'=>'Terjadi Kesalahan dalam melakukan proses peminjaman Oxy'],Response::HTTP_CONFLICT);
+        }
+        return ['message'=>'Proses Peminjaman Oxy berhasil dilakukan'];
+    }
+    
+    public function deleteDataOxy($id){
+        try {
+            //code...
+            Oxygen::findOrFail($id)->delete();
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response(['message'=>'Terjadi Kesalahan dalam menghapus Data Oxygen'],Response::HTTP_CONFLICT);
+      
+        }
+        return ['message'=>'Data Oxygen Berhasil Dihapus'];
     }
 }

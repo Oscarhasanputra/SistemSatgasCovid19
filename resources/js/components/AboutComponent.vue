@@ -6,8 +6,8 @@
           <div class="col-lg-6 mr-auto text-center text-lg-left">
             <span class="d-block subheading">Tentang</span>
             <h1 class="heading mb-3">Tentang Kami</h1>
-            <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel a, nulla incidunt eaque sit praesentium porro consectetur optio!</p>
-            <p class="mb-4"><a href="#" class="btn btn-primary">How to prevent</a></p>
+            <p class="mb-5">Bersama bahu membahu, membantu meringankan korban terdampak pandemi</p>
+            <p class="mb-4"><router-link to="/" class="btn btn-primary">Lihat Penyebaran</router-link></p>
 
 
 
@@ -29,8 +29,7 @@
       <div class="container">
         <div class="row mb-3">
           <div class="col-lg-7 text-center mx-auto">
-            <h2 class="section-heading">Statistik Virus Corona</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet, voluptate!</p>
+            <h2 class="section-heading">Berita &amp; Artikel</h2>
           </div>
         </div>
         <div class="row"> 
@@ -65,7 +64,7 @@
       </div>
     </div>
 
-    <div class="site-section">
+    <!-- <div class="site-section">
       <div class="container">
         <div class="row mb-5">
           <div class="col-lg-7 mx-auto text-center">
@@ -134,7 +133,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     </div>
 </template>
 <script>

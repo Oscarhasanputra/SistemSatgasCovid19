@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-    @extends('header')
+    @include('header')
 <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
   
-    <div id="overlayer"></div>
+    
+  
+    <div class="site-wrap" id="app">
+      <div id="overlayer"></div>
     <div class="loader">
       <div class="spinner-border text-primary" role="status">
         <span class="sr-only">Loading...</span>
       </div>
     </div>
-  
-    <div class="site-wrap" id="app">
   
       <div class="site-mobile-menu site-navbar-target">
         <div class="site-mobile-menu-header">
@@ -18,7 +19,30 @@
             <span class="icon-close2 js-menu-toggle"></span>
           </div>
         </div>
-        <div class="site-mobile-menu-body"></div>
+        <div class="site-mobile-menu-body">
+          <ul class="site-nav-wrap">
+                  <li class="active"><router-link to="/" class="nav-link">Home</router-link></li>
+                  <li class="has-children">
+                    <a href="#" class="nav-link">Pinjam</a>
+                      <ul class="dropdown">
+                        <li><router-link to="/oxymeter" class="nav-link">Oxymeter</router-link></li>
+                        <li><router-link to="/oxygen" class="nav-link">Oxygen</router-link></li>
+                      <!-- <li class="has-children">
+                        <a href="#">More Links</a>
+                        <ul class="dropdown">
+                          <li><a href="#">Menu One</a></li>
+                          <li><a href="#">Menu Two</a></li>
+                          <li><a href="#">Menu Three</a></li>
+                        </ul>
+                      </li> -->
+                    </ul>
+                  </li>
+                  <li><router-link to="/konsultasi" class="nav-link">Konsultasi</router-link></li>
+                  <li><router-link to="/donorplasma" class="nav-link">Donor Plasma</router-link></li>
+                  <li><router-link to="/about" class="nav-link">Tentang</router-link></li>
+                  <li ><a  class="btn-login btn btn-primary px-4 py-2" style="color:white !important;"> Login</a></li>
+                </ul>
+        </div>
       </div>
   
       <header class="site-navbar light js-sticky-header site-navbar-target" role="banner">
@@ -53,6 +77,7 @@
                   <li><router-link to="/konsultasi" class="nav-link">Konsultasi</router-link></li>
                   <li><router-link to="/donorplasma" class="nav-link">Donor Plasma</router-link></li>
                   <li><router-link to="/about" class="nav-link">Tentang</router-link></li>
+                  <li ><a  class="btn-login btn btn-primary px-4 py-2" style="color:white !important;"> Login</a></li>
                 </ul>
               </nav>
             </div>
@@ -68,11 +93,11 @@
       
       <router-view></router-view>
     
-      @extends("main.footer-content")
+      {{-- @include("main.footer-content") --}}
   
     
     </div> <!-- .site-wrap -->
     
 </body>
-@extends('footer')
+@include('footer')
 </html>

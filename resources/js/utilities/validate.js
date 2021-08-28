@@ -1,7 +1,7 @@
 import Vue from "vue";
 
-export const isValidated=()=>{
-    const elements=$(".required")
+export const isValidated=(className=null)=>{
+    const elements=className?$(className):$(".required")
     for(let i=0; i<elements.length;i++){
         const elem=elements[i]
         const value=elem.value;

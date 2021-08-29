@@ -15,8 +15,11 @@ use Auth;
 class OxygenController extends Controller
 {
 
-    public function getDataOxy(){
-        return Pinjam::with("pasien")->get();
+    public function getDataOxy(Request $request){
+        if($status=$request->Status){
+            return Pinjam::where("Status","=",$status)->with("pasien")->get();
+        }
+       return Pinjam::with("pasien")->get();
     }
    
     public function save(Request $request){

@@ -12,6 +12,24 @@
 
 namespace App\Models{
 /**
+ * App\Models\Berita
+ *
+ * @property int $IDBerita
+ * @property string $Judul
+ * @property string $Content
+ * @property string $Status
+ * @property string $created_at
+ * @property string $IDAdmin
+ * @property-read \App\Models\User $admin
+ * @method static \Illuminate\Database\Eloquent\Builder|Berita newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Berita newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Berita query()
+ */
+	class Berita extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Dokter
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Dokter newModelQuery()
@@ -31,6 +49,7 @@ namespace App\Models{
  * @property string|null $TanggalPositif
  * @property string|null $TanggalSembuh
  * @property string $Status
+ * @property-read \App\Models\Pasien $pasien
  * @method static \Illuminate\Database\Eloquent\Builder|DonorPlasma newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|DonorPlasma newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|DonorPlasma query()
@@ -120,7 +139,7 @@ namespace App\Models{
  * @property int|null $IDAdmin
  * @property string $Sumber
  * @property string $Gejala
- * @property int|null $Saturasi
+ * @property string|null $Saturasi
  * @property string|null $TanggalSwab
  * @property string|null $BuktiSwab
  * @property string|null $KonsumsiObat

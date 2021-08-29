@@ -6,11 +6,33 @@ use App\Http\Controllers\Controller;
 use App\Models\DonorPlasma;
 use Illuminate\Http\Request;
 use App\Models\Pasien;
+use Auth;
 use Illuminate\Http\Response;
 
 class DonorPlasmaController extends Controller
 {
     //
+
+    public function getAllData(Request $request){
+        if($status=$request->Status){
+            return DonorPlasma::where("Status","=",$status)->with("pasien")->get();
+        }
+       return DonorPlasma::with("pasien")->get();
+    }
+    public function adminUpdate($id,Request $request){
+        $data=$request->all();
+        $data['IDAdmin']=Auth::guard('admin')->user()->IDUser;
+        try {
+        DonorPlasma::findOrFail($id)->update($data);
+        return ['message'=>'Proses Pengajuan Donor Plasma Berhasil Diteruskan'];
+  
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response(['message'=>"Terjadi Kegagalan dalam memproses pengajuan donor"],Response::HTTP_BAD_REQUEST);
+
+        }
+        
+    }
     public function savingData(Request $request){
         $data=$request->all();
 

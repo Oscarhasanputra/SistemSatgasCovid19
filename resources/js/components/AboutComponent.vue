@@ -24,120 +24,76 @@
 
 
     <!-- MAIN -->
-   
-    <div class="site-section stats">
-      <div class="container">
-        <div class="row mb-3">
-          <div class="col-lg-7 text-center mx-auto">
-            <h2 class="section-heading">Berita &amp; Artikel</h2>
-          </div>
-        </div>
-        <div class="row"> 
-          <div class="col-lg-4">
-            <div class="data">
-              <span class="icon text-primary">
-                <span class="flaticon-virus"></span>
-              </span>
-              <strong class="d-block number">14,112,077</strong>
-              <span class="label">Kasus Aktif</span>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="data">
-              <span class="icon text-primary">
-                <span class="flaticon-virus"></span>
-              </span>
-              <strong class="d-block number">595,685</strong>
-              <span class="label">Meninggal</span>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="data">
-              <span class="icon text-primary">
-                <span class="flaticon-virus"></span>
-              </span>
-              <strong class="d-block number">8,397,665</strong>
-              <span class="label">Sembuh</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- <div class="site-section">
-      <div class="container">
-        <div class="row mb-5">
-          <div class="col-lg-7 mx-auto text-center">
-            <h2 class="mb-4 section-heading">Berita &amp; Artikel</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex officia quas, modi sit eligendi numquam!</p>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-4">
+   <div class="site-section">
+     <div class="container">
+        <div class="row justify-content-center">
+          <template 
+            v-for="(berita, index) in listBerita"> 
+          <router-link
+            class="col-10 col-md-4 my-3"
+            :to="'/berita/'+berita.IDBerita"
+            :key="index"
+          >
             <div class="post-entry">
               <a href="#" class="thumb">
-                <span class="date">30 Jul, 2020</span>
-                <img src="images/hero_1.jpg" alt="Image" class="img-fluid">
+                <span class="date">{{
+                  new Date(berita.created_at).toISOString().slice(0, 10)
+                }}</span>
+                <img
+                  :src="berita.overview"
+                  alt="Image"
+                  class="img-fluid"
+                  style="height: 400px !important"
+                />
               </a>
               <div class="post-meta text-center">
-                <a href="">
-                  <span class="icon-user"></span>
-                  <span>Admin</span>
-                </a>
-                <a href="#">
-                  <span class="icon-comment"></span>
-                  <span>3 Comments</span>
-                </a>
+                <span class="icon-user"></span>
+                <span>{{
+                  berita.admin && berita.admin.Nama
+                    ? berita.admin.Nama
+                    : "Unknown Admin"
+                }}</span>
               </div>
-              <h3><a href="#">How Coronavirus Very Contigous</a></h3>
+              <h3
+                :title="berita.Judul"
+                style="
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                  white-space: nowrap;
+                "
+              >
+                {{ berita.Judul }}
+              </h3>
             </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="post-entry">
-              <a href="#" class="thumb">
-                <span class="date">30 Jul, 2020</span>
-                <img src="images/hero_2.jpg" alt="Image" class="img-fluid">
-              </a>
-              <div class="post-meta text-center">
-                <a href="">
-                  <span class="icon-user"></span>
-                  <span>Admin</span>
-                </a>
-                <a href="#">
-                  <span class="icon-comment"></span>
-                  <span>3 Comments</span>
-                </a>
-              </div>
-              <h3><a href="#">How Coronavirus Very Contigous</a></h3>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="post-entry">
-              <a href="#" class="thumb">
-                <span class="date">30 Jul, 2020</span>
-                <img src="images/hero_1.jpg" alt="Image" class="img-fluid">
-              </a>
-              <div class="post-meta text-center">
-                <a href="">
-                  <span class="icon-user"></span>
-                  <span>Admin</span>
-                </a>
-                <a href="#">
-                  <span class="icon-comment"></span>
-                  <span>3 Comments</span>
-                </a>
-              </div>
-              <h3><a href="#">How Coronavirus Very Contigous</a></h3>
-            </div>
-          </div>
+          </router-link>
+          </template>
         </div>
-      </div>
-    </div> -->
-    </div>
+     </div>
+   </div>
+  
+   </div>
 </template>
 <script>
+import Request from "../utilities/request"
 export default {
-    
+  data(){
+    return{
+      listBerita:[]
+    }
+  },
+    mounted(){
+       Request.get("/api/berita").then((res) => {
+      const data = res.data.slice(0, 3);
+      this.listBerita = data;
+      this.listBerita.map((berita) => {
+        const doc = new DOMParser().parseFromString(
+          berita.Content,
+          "text/html"
+        );
+        const img = doc.querySelector("img");
+        berita.overview = img.src;
+      });
+    });
+    }
 }
 </script>

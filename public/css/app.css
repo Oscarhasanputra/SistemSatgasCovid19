@@ -10006,3 +10006,7 @@ h3 {
   font-weight: bold;
   color: blueviolet !important;
 }
+
+tbody.custom-table td {
+  vertical-align: middle;
+}

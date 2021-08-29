@@ -5,6 +5,7 @@ import KonsultasiComponent from "./components/KonsultasiComponent"
 import DonorPlasmaComponent from "./components/DonorPlasmaComponent"
 import AboutComponent from "./components/AboutComponent"
 import PasienComponent from "./components/PasienComponent.vue"
+import BeritaDetailComponent from "./components/BeritaDetailComponent.vue"
 
 //admin component
 import AdminComponent from "./components/admin/AdminComponent"
@@ -14,7 +15,10 @@ import AdminObatComponent from "./components/admin/AdminObatComponent"
 import AdminDokterComponent from "./components/admin/AdminDokterComponent"
 import AdminOxyComponent from "./components/admin/AdminOxyComponent"
 import AdminPinjamOxyComponent from "./components/admin/AdminPinjamOxyComponent"
-
+import AdminBeritaComponent from "./components/admin/AdminBeritaComponent"
+import AdminTambahBeritaComponent from "./components/admin/AdminTambahBerita"
+import AdminEditBeritaComponent from "./components/admin/AdminEditBerita"
+import AdminDonorPlasmaComponent from "./components/admin/AdminDonorPlasma"
 //dokter component
 import DokterKonsulComponent from "./components/dokter/KonsultasiComponent"
 export default{
@@ -48,8 +52,13 @@ export default{
         },
         {
             name:"about",
-            path:"/about",
+            path:"/berita",
             component: AboutComponent
+        },
+        {
+            name:"detailBerita",
+            path:"/berita/:id",
+            component: BeritaDetailComponent
         },
         {
             name:"pasien",
@@ -65,6 +74,11 @@ export default{
             name:"AdminKonsultasi",
             path:"/admin/konsultasi",
             component: AdminKonsultasiComponent
+        },
+        {
+            name:"AdminDonorPlasma",
+            path:"/admin/donorplasma",
+            component: AdminDonorPlasmaComponent
         },
         {
             name:"AdminPasien",
@@ -90,6 +104,21 @@ export default{
             name:"AdminPinjamOxy",
             path:"/admin/pinjamoxy",
             component: AdminPinjamOxyComponent
+        },
+        {
+            name:"AdminBerita",
+            path:"/admin/berita",
+            component: AdminBeritaComponent 
+        },
+        {
+            name:"AdminEditBerita",
+            path:"/admin/berita/:id",
+            component: AdminEditBeritaComponent 
+        },
+        {
+            name:"Admintambahberita",
+            path:"/admin/tambahberita",
+            component: AdminTambahBeritaComponent 
         },
         {
             name:"KonsulDokter",

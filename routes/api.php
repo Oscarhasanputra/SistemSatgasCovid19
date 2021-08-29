@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\BeritaController;
 use App\Http\Controllers\Api\DonorPlasmaController;
 use App\Http\Controllers\Api\ObatController;
 use App\Http\Controllers\Api\OxygenController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Api\PasienController;
 use App\Http\Controllers\Api\TelemedicineController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\ApiObatController;
+use App\Models\Berita;
 use App\Models\Obat;
 use App\Models\Pasien;
 use App\Models\User;
@@ -49,13 +51,19 @@ Route::middleware(['admin:admin,doctor'])->group(function () {
     });
 
 });
-
+Route::get("/berita",[BeritaController::class,"getData"]);
+Route::get('berita/{id}',[BeritaController::class,"getDetailBerita"]);
 Route::middleware(['admin:admin,doctor'])->group(function(){
 
     Route::get("konsultasi/dokter",[TelemedicineController::class,'getKonsultasiDokter']);
 });
 
 Route::middleware(['admin:admin,doctor'])->group(function(){
+    Route::post("/uploadImages",[BeritaController::class,"uploadImages"]);
+    Route::post("/berita",[BeritaController::class,'simpanData']);
+    Route::delete("/deleteImages",[BeritaController::class,'deleteImages']);
+    Route::delete("/berita/{id}",[BeritaController::class,'deleteData']);
+
     Route::post("user/admin",[UserController::class,"saveDataAdmin"]);
     Route::get("user/admin",[UserController::class,"getDataAdmin"]);
     Route::put("user/admin/{id}",[UserController::class,"updateDataAdmin"]);
@@ -87,4 +95,7 @@ Route::middleware(['admin:admin,doctor'])->group(function(){
     Route::get('oxy',[OxygenController::class,'getDataOxy']);
     Route::put('/oxy/{id}',[OxygenController::class,'updateDataPinjam']);
     // Route::put()
+
+    Route::get("pendonor",[DonorPlasmaController::class,'getAllData']);
+    Route::put("donor/{id}",[DonorPlasmaController::class,'adminUpdate']);
 });

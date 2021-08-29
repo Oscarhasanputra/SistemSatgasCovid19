@@ -51,9 +51,14 @@
     </li>
 
     <li class="nav-item">
-        <router-link to="/donorplasma" class="nav-link">
+        <router-link to="/admin/donorplasma" class="nav-link">
             <i class="icon-heartbeat"></i>
             <span>Donor Plasma</span></router-link>
+    </li>
+    <li class="nav-item">
+        <router-link to="/admin/berita" class="nav-link">
+            <i class="icon-newspaper-o"></i>
+            <span>Berita</span></router-link>
     </li>
     @elseif (Auth::guard("doctor")->check())
     <li class="nav-item">

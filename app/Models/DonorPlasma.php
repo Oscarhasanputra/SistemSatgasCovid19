@@ -17,4 +17,8 @@ class DonorPlasma extends Model
     protected $fillable = ['IDPasien','IDAdmin','TanggalPositif','TanggalSembuh','Status'];
     
     public $incrementing = true;
+
+    public function pasien(){
+        return $this->belongsTo(Pasien::class,"IDPasien");
+    }
 }

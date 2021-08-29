@@ -25,7 +25,7 @@ class TelemedicineController extends Controller
    
     public function getAllKonsultasi(Request $request){
         if($status=$request->Status){
-            return Telemedicine::where("Status","=",$status)->with("pasien")->get();
+            return Telemedicine::where("Status","=",$status)->with(["pasien",'detail','detail.obat'])->get();
         }
         $tele=Telemedicine::with(["pasien",'detail','detail.obat'])->get();
         return $tele;

@@ -39,7 +39,7 @@
                   </li>
                   <li><router-link to="/konsultasi" class="nav-link">Konsultasi</router-link></li>
                   <li><router-link to="/donorplasma" class="nav-link">Donor Plasma</router-link></li>
-                  <li><router-link to="/about" class="nav-link">Tentang</router-link></li>
+                  <li><router-link to="/berita" class="nav-link">Tentang</router-link></li>
                   <li ><a  class="btn-login btn btn-primary px-4 py-2" style="color:white !important;"> Login</a></li>
                 </ul>
         </div>
@@ -51,7 +51,7 @@
           <div class="row align-items-center">
   
             <div class="col-6 col-xl-2">
-              <div class="mb-0 site-logo"><a href="index.html" class="mb-0"><img src="images/logo.jpg" alt="" height="50px"></img></a></div>
+              <div class="mb-0 site-logo"><a href="index.html" class="mb-0"><img src={{asset("images/logo.jpg")}} alt="" height="50px"></img></a></div>
             </div>
   
             <div class="col-12 col-md-10 d-none d-xl-block">
@@ -76,7 +76,7 @@
                   </li>
                   <li><router-link to="/konsultasi" class="nav-link">Konsultasi</router-link></li>
                   <li><router-link to="/donorplasma" class="nav-link">Donor Plasma</router-link></li>
-                  <li><router-link to="/about" class="nav-link">Tentang</router-link></li>
+                  <li><router-link to="/berita" class="nav-link">Tentang</router-link></li>
                   <li ><a  class="btn-login btn btn-primary px-4 py-2" style="color:white !important;"> Login</a></li>
                 </ul>
               </nav>

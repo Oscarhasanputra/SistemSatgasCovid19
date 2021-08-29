@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 //     return['message'=>"hello"];
 // });
 
+
+
 Route::get('/', function (Request $request) {
     // return dd(session("IDUser"));
     // return dd(Auth::guard('admin')->validate);
@@ -36,6 +38,9 @@ Route::prefix("/admin")->middleware(['admin.route:admin'])->group(function(){
         return view("admin.main");
     });
     Route::get("/{any}",function(){
+        return view("admin.main");
+    });
+    Route::get("/{any}/{url}",function(){
         return view("admin.main");
     });
 });
@@ -90,3 +95,9 @@ Route::get('/{any}', function ($id) {
     
     return view('main.main');
 });
+Route::get('/{any}/{id}', function ($id) {
+    // session()->put("IDUser","well");
+    
+    return view('main.main');
+});
+

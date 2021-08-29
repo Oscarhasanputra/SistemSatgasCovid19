@@ -10,10 +10,8 @@ import VueAxios from "vue-axios";
 import axios from "axios";
 import VueSweetalert2 from "vue-sweetalert2";
 import routers from "./router.js";
-
 import Vue from "vue";
 import VueMeta from "vue-meta";
-import AutoComplete from "@trevoreyre/autocomplete-vue";
 import "sweetalert2/dist/sweetalert2.min.css";
 
 window.Vue = require("vue").default;

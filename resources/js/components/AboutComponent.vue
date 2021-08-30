@@ -30,7 +30,7 @@
           <template 
             v-for="(berita, index) in listBerita"> 
           <router-link
-            class="col-10 col-md-4 my-3"
+            class="col-10 col-md-4 col-sm-6 my-3"
             :to="'/berita/'+berita.IDBerita"
             :key="index"
           >
@@ -83,7 +83,7 @@ export default {
   },
     mounted(){
        Request.get("/api/berita").then((res) => {
-      const data = res.data.slice(0, 3);
+      const data = res.data;
       this.listBerita = data;
       this.listBerita.map((berita) => {
         const doc = new DOMParser().parseFromString(

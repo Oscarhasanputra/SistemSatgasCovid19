@@ -15,9 +15,9 @@ class BeritaController extends Controller
     public function getDetailBerita($id){
         try {
             //code...
-
             $berita= Berita::findOrFail($id);
-            return $berita;
+            $list=Berita::all()->except($id);
+            return ['berita'=>$berita,'list'=>$list];
         } catch (\Throwable $th) {
             //throw $th;
             return response(['message'=>"Berita Tidak Ditemukan"],Response::HTTP_NOT_FOUND);

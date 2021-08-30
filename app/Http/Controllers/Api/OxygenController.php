@@ -12,14 +12,16 @@ use App\Models\Pasien;
 use App\Models\Pinjam;
 use Auth;
 
+use function PHPUnit\Framework\isEmpty;
+
 class OxygenController extends Controller
 {
 
     public function getDataOxy(Request $request){
         if($status=$request->Status){
-            return Pinjam::where("Status","=",$status)->with("pasien")->get();
+            return Pinjam::where("Status","=",$status)->with(["pasien",'oxygen','oxymeter'])->get();
         }
-       return Pinjam::with("pasien")->get();
+       return Pinjam::with(["pasien",'oxygen','oxymeter'])->get();
     }
    
     public function save(Request $request){
@@ -119,7 +121,10 @@ class OxygenController extends Controller
         // Oxygen::create()
     }
 
-    public function getAllData(){
+    public function getAllData(Request $request){
+        if($status=$request->Status){
+            return Oxygen::where("Status","=",$status)->get();
+        }
         return Oxygen::all();
     }
     public function updateData($id,$data){
@@ -152,20 +157,41 @@ class OxygenController extends Controller
         $data=$request->all();
         $date= Carbon::now();
         // return $data;
+        unset($data['IDOxygen']);
+        unset($data['IDOxymeter']);
+        $data['IDAdmin']=Auth::guard('admin')->user()->IDUser;
         try {
             //code...
             // return $request->all();
-            Pinjam::findOrFail($id)->update($data);
-            
+            $dataPinjam=Pinjam::findOrFail($id);
+            $dataPinjam->update($data);
             if($request->Status=="Dipinjamkan"){
 
-                $Oxy=Oxygen::where("Status","=","Tersedia")->first();
-                $Oxy->update(['Status'=>'Terpakai']);
+                if(!empty($request->IDOxygen))
+                    Oxygen::findOrFail($request->IDOxygen)->update(['Status'=>'Terpakai']);
+               
+            
+                if(!empty($request->IDOxymeter))
+                    Oxygen::findOrFail($request->IDOxymeter)->update(['Status'=>'Terpakai']);
+
+                $dataPinjam->update(['IDOxygen'=>$request->IDOxygen,'IDOxymeter'=>$request->IDOxymeter,
+                                     'TglKirim'=>$date]);
+           
+            }
+            elseif($request->Status=="Selesai"){
+                if(!empty($request->IDOxygen))
+                    Oxygen::findOrFail($request->IDOxygen)->update(['Status'=>'Tersedia']);
+           
+        
+                if(!empty($request->IDOxymeter))
+                    Oxygen::findOrFail($request->IDOxymeter)->update(['Status'=>'Tersedia']);
+
+                $dataPinjam->update(['TglKembali'=>$date]);
             }
 
                 // $this->updateData($Oxy->IDOxy,['Status'=>"Terpakai"]);
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
             return response(['message'=>'Terjadi Kesalahan dalam melakukan proses peminjaman Oxy'],Response::HTTP_CONFLICT);
         }
         return ['message'=>'Proses Peminjaman Oxy berhasil dilakukan'];

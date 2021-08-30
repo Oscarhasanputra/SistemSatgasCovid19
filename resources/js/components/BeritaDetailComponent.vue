@@ -3,23 +3,27 @@
     <h2 class="my-4 text-center fw-bold">{{ berita.Judul }}</h2>
     <div class="container" v-html="berita.Content"></div>
     <div
-      className="card material-card w-40-s mr-1-s ml-1-s"
+      class="card material-card w-40-s mr-1-s ml-1-s"
       style="borderradius: 0; position: relative"
     >
       <div style="overflow: hidden; lineheight: 0">
-        <img src="/images/logo.jpg" className="material-card-image" />
+        <img src="/images/logo.jpg" class="material-card-image" />
       </div>
-      <div className="white-text material-card-header z-depth-4">
-        <span className="title-header-blog"> {blog.title}{blog.title} </span>
+      <div class="white-text material-card-header z-depth-4">
+        <span class="title-header-blog"> {blog.title}{blog.title} </span>
       </div>
-      <div className="material-card-backdrop"></div>
-      <div className="material-card-backdrop-content">
+      <div class="material-card-backdrop"></div>
+      <div class="material-card-backdrop-content">
+          <router-link 
+          to="/"
+          class="expandable-button white-text aligns-center"
+          ></router-link>
         <!-- <Link
                                 to={`/blog/${blog.url}`}
                                 onClick={(e)=>{
                                     e.preventDefault()
                                     history.push({pathname:`/blog/${blog.url}`,state:{blog,index}})}
-                                    } className="expandable-button white-text aligns-center">See More <MdVisibility style={{verticalAlign:"middle"}} className="white-text"></MdVisibility></Link> -->
+                                    } class="expandable-button white-text aligns-center">See More <MdVisibility style={{verticalAlign:"middle"}} class="white-text"></MdVisibility></Link> -->
       </div>
     </div>
   </div>

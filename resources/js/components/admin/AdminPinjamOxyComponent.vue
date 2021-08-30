@@ -25,8 +25,10 @@
                 <th>No</th>
                 <th>Pinjaman</th>
                 <th>Nama Pasien</th>
+                <th>Alamat</th>
                 <th>Tanggal Pinjam</th>
                 <th>Status</th>
+
                 <th>Aksi</th>
               </tr>
             </thead>
@@ -45,6 +47,13 @@
                       : "-"
                   }}
                 </td>
+                <td>
+                  {{
+                    pinjam.pasien && pinjam.pasien.Alamat
+                      ? pinjam.pasien.Alamat
+                      : "-"
+                  }}
+                </td>
                 <td>{{ pinjam.created_at }}</td>
                 <td>{{ pinjam.Status }}</td>
                 <td>
@@ -58,7 +67,7 @@
                     Lihat
                   </button>
                   <button
-                  v-if="pinjam.Status!='Selesai'"
+                    v-if="pinjam.Status != 'Selesai'"
                     @click="editModal(pinjam)"
                     type="button"
                     class="btn btn-success"
@@ -112,13 +121,55 @@
                 </td>
               </tr>
               <tr>
+                <th>Alamat Pasien</th>
+                <td>
+                  {{
+                    detailPinjam.pasien && detailPinjam.pasien.Alamat
+                      ? detailPinjam.pasien.Alamat
+                      : "-"
+                  }}
+                </td>
+              </tr>
+              <tr>
                 <th>Tanggal Pinjam</th>
                 <td>{{ detailPinjam.created_at }}</td>
               </tr>
               <tr>
                 <th>Asal Pinjam</th>
-                <td>{{detailPinjam.AsalPinjam}}
-                  
+                <td>{{ detailPinjam.AsalPinjam }}</td>
+              </tr>
+              <tr
+                v-if="
+                  detailPinjam.JenisPinjaman == 'Oxymeter' ||
+                  detailPinjam.JenisPinjaman == 'Oxygen & Oxymeter'
+                "
+              >
+              <th>Oxymeter</th>
+              <td>{{detailPinjam.oxymeter ? detailPinjam.oxymeter.NamaOxy:'-'}}</td>
+              </tr>
+               <tr
+                v-if="
+                  detailPinjam.JenisPinjaman == 'Oxygen' ||
+                  detailPinjam.JenisPinjaman == 'Oxygen & Oxymeter'
+                "
+              >
+              <th>Oxygen</th>
+              <td>{{detailPinjam.oxygen ? detailPinjam.oxygen.NamaOxy:'-'}}</td>
+              </tr>
+              <tr v-if="detailPinjam.TglKirim">
+                <th>
+                  Tanggal Kirim
+                </th>
+                <td>
+                  {{new Date(detailPinjam.TglKirim).toISOString().slice(0, 10)}}
+                </td>
+              </tr>
+              <tr v-if="detailPinjam.TglKembali">
+                <th>
+                  Tanggal Kembali
+                </th>
+                <td>
+                  {{new Date(detailPinjam.TglKembali).toISOString().slice(0, 10)}}
                 </td>
               </tr>
             </table>
@@ -170,22 +221,74 @@
                 </td>
               </tr>
               <tr>
+                <th>Alamat Pasien</th>
+                <td>
+                  {{
+                    detailPinjam.pasien && detailPinjam.pasien.Alamat
+                      ? detailPinjam.pasien.Alamat
+                      : "-"
+                  }}
+                </td>
+              </tr>
+              <tr>
                 <th>Asal Pinjam</th>
                 <td>
-                  <select v-model="detailPinjam.AsalPinjam">
-                    <option nama="dokter" value="Anjuran Dokter">
-                      Anjuran Dokter
-                    </option>
-                    <option nama="dokter" value="Pinjam Sendiri">
-                      Pinjam Sendiri
-                    </option>
+                  <select class="form-select" v-model="detailPinjam.AsalPinjam">
+                    <option value="Anjuran Dokter">Anjuran Dokter</option>
+                    <option value="Pinjam Sendiri">Pinjam Sendiri</option>
                   </select>
+                </td>
+              </tr>
+              <tr
+                v-if="
+                  detailPinjam.JenisPinjaman == 'Oxygen' ||
+                  detailPinjam.JenisPinjaman == 'Oxygen & Oxymeter'
+                "
+              >
+                <th>Oxygen</th>
+                <td>
+                  <AutoComplete
+                    :search="oxygen"
+                    :placeholder="oxygen().length>0 ? `Cari Oxygen`:`Oxygen Tidak Tersedia`"
+                    aria-label="Cari Oxygen"
+                    @submit="selectedOxy"
+                    :get-result-value="getResultVal"
+                  >
+                    <template #result="{ result, props }">
+                      <li v-bind="props" class="autocomplete-result">
+                        {{ result.NamaOxy }}
+                      </li>
+                    </template>
+                  </AutoComplete>
+                </td>
+              </tr>
+               <tr
+                v-if="
+                  detailPinjam.JenisPinjaman == 'Oxymeter' ||
+                  detailPinjam.JenisPinjaman == 'Oxygen & Oxymeter'
+                "
+              >
+                <th>Oxymeter</th>
+                <td>
+                  <AutoComplete
+                    :search="oxymeter"
+                    :placeholder="oxymeter().length>0 ? `Cari Oxymeter`:`Oxymeter Tidak Tersedia`"
+                    aria-label="Cari Oxymeter"
+                    @submit="selectedOxymeter"
+                    :get-result-value="getResultVal"
+                  >
+                    <template #result="{ result, props }">
+                      <li v-bind="props" class="autocomplete-result">
+                        {{ result.NamaOxy }}
+                      </li>
+                    </template>
+                  </AutoComplete>
                 </td>
               </tr>
               <tr>
                 <th>Status</th>
                 <td>
-                  <select v-model="detailPinjam.Status">
+                  <select class="form-select" v-model="detailPinjam.Status">
                     <option nama="dokter" value="Menunggu">Menunggu</option>
                     <option nama="dokter" value="Dipinjamkan">
                       Dipinjamkan
@@ -209,36 +312,65 @@
 </template>
 <script>
 import Request from "../../utilities/request";
+import "@trevoreyre/autocomplete-vue/dist/style.css";
+import AutoComplete from "@trevoreyre/autocomplete-vue";
 export default {
+  components: {
+    AutoComplete,
+  },
   data() {
     return {
-     status:"",
+      status: "",
       listPinjam: [],
+      listOxy: [],
       detailPinjam: {},
     };
   },
   mounted() {
-    this.getOxyList()
+    this.getListPinjam();
+    Request.get("/api/data/oxygen", { Status: "Tersedia" }).then((res) => {
+      this.listOxy = res.data;
+    });
   },
   methods: {
-    filterStatus:function(){
-        this.getOxyList(this.status);
+    getResultVal: function (oxy) {
+      return oxy.NamaOxy;
     },
-    getOxyList: function (status = "") {
+    selectedOxy:function(oxy){
+      this.detailPinjam.IDOxygen = oxy.IDOxy;
+    },
+    selectedOxymeter:function(oxy){
+      this.detailPinjam.IDOxymeter= oxy.IDOxy;
+    },
+
+    oxygen: function () {
+      const filtered = this.listOxy.filter((oxy) => oxy.Jenis == "Oxygen");
+      return filtered;
+    },
+    oxymeter: function () {
+      const filtered = this.listOxy.filter((oxy) => oxy.Jenis == "Oxymeter");
+      return filtered;
+    },
+    filterStatus: function () {
+      this.getListPinjam(this.status);
+    },
+    getListPinjam: function (status = "") {
       Request.get("/api/oxy", { Status: status }).then((res) => {
         this.listPinjam = res.data;
-        this.$nextTick(()=>{
-            $("#dataTable").DataTable()
-        })
+        this.$nextTick(() => {
+          $("#dataTable").DataTable();
+        });
       });
     },
     editModal: function (dataPinjam) {
       this.detailPinjam = dataPinjam;
     },
     simpanData: function () {
+      const {IDOxygen,IDOxymeter}=this.detailPinjam;
+    
       Request.put("/api/oxy/" + this.detailPinjam.IDTrPinjam, this.detailPinjam)
         .then((res) => {
-          // this.$router.go(0)
+          this.$router.go(0)
           console.log(res.data);
         })
         .catch((err) => {

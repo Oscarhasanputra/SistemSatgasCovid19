@@ -133,7 +133,8 @@ namespace App\Models{
  *
  * @property int $IDTrPinjam
  * @property string $IDPasien
- * @property int|null $IDOxy
+ * @property int|null $IDOxygen
+ * @property int|null $IDOxymeter
  * @property string|null $TglKirim
  * @property string|null $TglKembali
  * @property int|null $IDAdmin
@@ -150,6 +151,8 @@ namespace App\Models{
  * @property string $JenisPinjaman
  * @property string $AsalPinjam
  * @property string $created_at
+ * @property-read \App\Models\Oxygen|null $oxygen
+ * @property-read \App\Models\Oxygen|null $oxymeter
  * @property-read \App\Models\Pasien $pasien
  * @method static \Illuminate\Database\Eloquent\Builder|Pinjam newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Pinjam newQuery()
@@ -177,6 +180,7 @@ namespace App\Models{
  * @property string|null $ButuhOxymeter
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TelemedicineDetail[] $detail
  * @property-read int|null $detail_count
+ * @property-read \App\Models\User|null $dokter
  * @property-read \App\Models\Pasien $pasien
  * @method static \Illuminate\Database\Eloquent\Builder|Telemedicine newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Telemedicine newQuery()

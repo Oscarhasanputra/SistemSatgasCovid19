@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Peminjaman Oxy</h1>
+    <h1 class="h3 mb-2 text-gray-800">Data Pendonor</h1>
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -25,7 +25,7 @@
                 <th>Nama Pasien</th>
                 <th>Tanggal Positif</th>
                 <th>Tanggal Sembuh</th>
-                <th>Status</th>
+                <th>Alamat</th>
                 <th>Aksi</th>
               </tr>
             </thead>
@@ -46,7 +46,11 @@
 
                 <td>{{ pendonor.TanggalPositif }}</td>
                 <td>{{ pendonor.TanggalSembuh }}</td>
-                <td>{{ pendonor.Status }}</td>
+                <td>{{
+                    pendonor.pasien && pendonor.pasien.Alamat
+                      ? pendonor.pasien.Alamat
+                      : "-"
+                  }}</td>
                 <td>
                   <button
                     @click="editModal(pendonor)"
@@ -56,16 +60,6 @@
                     data-target="#Lihat"
                   >
                     Lihat
-                  </button>
-                  <button
-                  v-if="pendonor.Status!='Selesai'"
-                    @click="editModal(pendonor)"
-                    type="button"
-                    class="btn btn-success"
-                    data-toggle="modal"
-                    data-target="#Proses"
-                  >
-                    Proses
                   </button>
                 </td>
               </tr>

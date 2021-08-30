@@ -235,18 +235,32 @@
                       {{ obat.NamaObat }}
                     </option>
                   </select> -->
-                   <div class="d-flex flex-row flex-wrap" v-if="editDataKonsultasi.detail">
-                    <div
-                      class="btn btn-secondary mx-2 my-2"
-                      v-for="(obat, index) in editDataKonsultasi.detail"
-                      :key="index"
-                    >
-                      {{ obat.obat&& obat.obat.NamaObat }} 
-                      <div class="fw-bold text-white "> ({{obat.Qty}})</div>
-                    </div>
-                  </div>
-
-                  <div class="d-flex flex-row flex-wrap">
+                  <table id="editTable" class="table" v-if="editDataKonsultasi.detail">
+                      <thead>
+                        <tr>
+                          <th>Obat</th>
+                          <th>Qty</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(obat,index) in editDataKonsultasi.detail" :key="index">
+                           <td>{{obat.obat && obat.obat.NamaObat}}</td>
+                           <td>{{obat.Qty}}</td>
+                        </tr>
+                        <tr   v-for="(obat, index) in selected"
+                      :key="obat.NamaObat + index">
+                      <td>  <span class="text-danger fw-bold" style="cursor:pointer;" @click="deleteItemSelected(index)">X</span>
+                      {{ obat.NamaObat }} 
+                      </td>
+                      <td>{{obat.Qty}}</td>
+                    
+                      </tr>
+                      </tbody>
+                  </table>
+                 
+                <div v-else> Tidak Ada</div>
+                  
+                  <!-- <div class="d-flex flex-row flex-wrap">
                     <div
                       class="btn btn-primary mx-2 my-2"
                       v-for="(obat, index) in selected"
@@ -255,7 +269,7 @@
                       <span class="text-danger fw-bold" @click="deleteItemSelected(index)">X</span>
                       {{ obat.NamaObat }}
                     </div>
-                  </div>
+                  </div> -->
                 </td>
               </tr>
 
@@ -264,6 +278,8 @@
                 <td>
                   <select
                     name="oxygen"
+
+                    class="form-select"
                     v-model="editDataKonsultasi.ButuhOksigen"
                     :disabled="editDataKonsultasi.StatusPeminjaman"
                   >
@@ -278,6 +294,7 @@
                 <td>
                   <select
                     name="oxymeter"
+                    class="form-select"
                     v-model="editDataKonsultasi.ButuhOxymeter"
                     :disabled="editDataKonsultasi.StatusPeminjaman"
                   >
@@ -330,6 +347,13 @@ export default {
     Request.get("/api/obat/tersedia")
       .then((res) => {
         this.listObat = res.data;
+         this.$nextTick(() => {
+          $("#dataTable").DataTable();
+          $("#editTable").DataTable({
+          searching:false,
+          info:false,
+        })
+        }); 
       })
       .catch((err) => {});
   },

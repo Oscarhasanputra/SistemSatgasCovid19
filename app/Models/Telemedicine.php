@@ -23,7 +23,9 @@ class Telemedicine extends Model
     public function pasien(){
         return $this->belongsTo(Pasien::class,"IDPasien");
     }
-
+    public function dokter(){
+        return $this->belongsTo(User::class,'IDDokter');
+    }
     public function detail(){
         return $this->hasMany(TelemedicineDetail::class,'IDTrTele');
     }

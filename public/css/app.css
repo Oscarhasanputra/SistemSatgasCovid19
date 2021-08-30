@@ -10010,3 +10010,97 @@ h3 {
 tbody.custom-table td {
   vertical-align: middle;
 }
+
+.material-card-header::before {
+  content: "";
+  position: absolute;
+  left: 0px;
+  top: -10px;
+  width: 0;
+  border: 5px solid #c73068;
+  border-top-color: transparent !important;
+  border-left-color: transparent !important;
+}
+
+.material-card {
+  cursor: pointer;
+  max-width: 100%;
+  width: 100%;
+}
+.material-card .material-card-backdrop-content {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: transparent;
+  z-index: 120;
+  display: flex;
+  justify-content: center;
+  transform: translate(0px, -20px);
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+}
+.material-card .material-card-backdrop {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: black;
+  opacity: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+}
+.material-card .material-card-image {
+  width: 100%;
+  height: 236px;
+  max-height: 100%;
+}
+.material-card:hover .material-card-header {
+  -webkit-animation: material-scroll-in 1s ease-in-out;
+          animation: material-scroll-in 1s ease-in-out;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+.material-card:hover .material-card-backdrop {
+  transition: all 0.5s ease-in-out 0.3s;
+  opacity: 0.5;
+}
+.material-card:hover .material-card-backdrop-content {
+  transition: all 0.2s ease-in 0.8s;
+  transform: translate(0px, 0px);
+  opacity: 1;
+}
+.material-card:hover .material-card-image {
+  transform: scale(1.1);
+  transition: all 0.5s ease-in;
+}
+
+@-webkit-keyframes material-scroll-in {
+  0% {
+    width: 90%;
+  }
+  50% {
+    width: 0px;
+    visibility: hidden;
+  }
+  100% {
+    padding: 0px;
+    visibility: hidden;
+    width: 0px;
+  }
+}
+
+@keyframes material-scroll-in {
+  0% {
+    width: 90%;
+  }
+  50% {
+    width: 0px;
+    visibility: hidden;
+  }
+  100% {
+    padding: 0px;
+    visibility: hidden;
+    width: 0px;
+  }
+}

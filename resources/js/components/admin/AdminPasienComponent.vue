@@ -33,12 +33,12 @@
             </thead>
 
             <tbody>
-              <tr v-for="(pasien,index) in listPasien" :key="index">
-                <td>{{index+1}}</td>
-                <th>{{pasien.IDPasien}}</th>
-                <td>{{pasien.NamaPasien}}</td>
-                <td>{{pasien.NoHP}}</td>
-                <td>{{pasien.Alamat}}</td>
+              <tr v-for="(pasien, index) in listPasien" :key="index">
+                <td>{{ index + 1 }}</td>
+                <th>{{ pasien.IDPasien }}</th>
+                <td>{{ pasien.NamaPasien }}</td>
+                <td>{{ pasien.NoHP }}</td>
+                <td>{{ pasien.Alamat }}</td>
                 <td>
                   <button
                     type="button"
@@ -49,10 +49,15 @@
                   >
                     Edit
                   </button>
-                  <button type="button" class="btn btn-danger" @click="deletePasien(pasien.IDPasien)">Delete</button>
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    @click="deletePasien(pasien.IDPasien)"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
-              
             </tbody>
           </table>
         </div>
@@ -84,7 +89,7 @@
             </button>
           </div>
           <div class="modal-body">
-           <table class="table">
+            <table class="table">
               <!-- <tr>
                     <th>ID Pasien</th>
                     <td><input type="text" name="" id="" value="005" disabled></td>
@@ -179,7 +184,7 @@
                 <td>
                   <select
                     name="Agama Pasien"
-                    class="requiredEdit"
+                    class="requiredEdit form-select"
                     v-model="editDataPasien.Agama"
                   >
                     <option nama="agama" value="Islam">Islam</option>
@@ -226,7 +231,7 @@
                 <th>Gol. Darah *</th>
                 <td>
                   <select
-                    class="requiredEdit"
+                    class="requiredEdit form-select"
                     v-model="editDataPasien.GolonganDarah"
                     name="Golongan Darah Pasien"
                   >
@@ -241,7 +246,7 @@
                 <th>Rhesus Darah *</th>
                 <td>
                   <select
-                    class="requiredEdit"
+                    class="requiredEdit form-select"
                     v-model="editDataPasien.RhesusDarah"
                     name="Rhesus Darah Pasien"
                   >
@@ -251,17 +256,22 @@
                 </td>
               </tr>
               <tr>
-                <th>Foto KTP {{editDataPasien.FotoKTP==''? '*':''}}</th>
+                <th>Foto KTP {{ editDataPasien.FotoKTP == "" ? "*" : "" }}</th>
                 <td>
                   <input
                     type="file"
-                    :class="editDataPasien.FotoKTP?'':'requiredEdit'"
+                    :class="editDataPasien.FotoKTP ? '' : 'requiredEdit'"
                     accept="image/png, image/jpeg"
                     data-message="Foto KTP Pasien belum diupload"
                     id=""
                     @change="uploadKTPEdit"
                   />
-                  <img v-if="editDataPasien.FotoKTP" :src="'/storage/'+editDataPasien.FotoKTP" height="100" width="100"/>
+                  <img
+                    v-if="editDataPasien.FotoKTP"
+                    :src="'/storage/' + editDataPasien.FotoKTP"
+                    height="100"
+                    width="100"
+                  />
                 </td>
               </tr>
               <tr>
@@ -290,8 +300,8 @@
                 <th>Status Penanggung</th>
                 <td>
                   <select
-                    name="Status Penanggung Jawab"
-                    class="form-control"
+                    name="Status Penanggung Jawab "
+                    class="form-control form-select"
                     v-model="editDataPasien.StatusPenanggung"
                   >
                     <option value="OrangTua" selected>Orang Tua</option>
@@ -305,7 +315,13 @@
             </table>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" @click="simpanEditDataPasien">Simpan</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="simpanEditDataPasien"
+            >
+              Simpan
+            </button>
             <button type="button" class="btn btn-danger">Batal</button>
           </div>
         </div>
@@ -432,7 +448,7 @@
                 <td>
                   <select
                     name="Agama Pasien"
-                    class="requiredSaved"
+                    class="requiredSaved form-select"
                     v-model="dataPasien.Agama"
                   >
                     <option nama="agama" value="Islam">Islam</option>
@@ -479,7 +495,7 @@
                 <th>Gol. Darah *</th>
                 <td>
                   <select
-                    class="requiredSaved"
+                    class="requiredSaved form-select"
                     v-model="dataPasien.GolonganDarah"
                     name="Golongan Darah Pasien"
                   >
@@ -494,7 +510,7 @@
                 <th>Rhesus Darah *</th>
                 <td>
                   <select
-                    class="requiredSaved"
+                    class="requiredSaved form-select"
                     v-model="dataPasien.RhesusDarah"
                     name="Rhesus Darah Pasien"
                   >
@@ -509,7 +525,6 @@
                   <input
                     class="requiredSaved"
                     type="file"
-
                     accept="image/png, image/jpeg"
                     data-message="Foto KTP Pasien belum diupload"
                     id=""
@@ -543,8 +558,8 @@
                 <th>Status Penanggung</th>
                 <td>
                   <select
-                    name="Status Penanggung Jawab"
-                    class="form-control"
+                    name="Status Penanggung Jawab "
+                    class="form-control form-select"
                     v-model="dataPasien.StatusPenanggung"
                   >
                     <option value="OrangTua" selected>Orang Tua</option>
@@ -573,54 +588,53 @@
   </div>
 </template>
 <script>
-import { isValidated} from "../../utilities/validate"
-import Request from "../../utilities/request"
+import { isValidated } from "../../utilities/validate";
+import Request from "../../utilities/request";
 export default {
   data() {
     return {
       dataPasien: {
         JenisKelamin: "Laki-Laki",
       },
-      editDataPasien:{
-          
-      },
-      listPasien:[]
+      editDataPasien: {},
+      listPasien: [],
     };
   },
-  mounted(){
-      Request.get("/api/user/pasien").then(res=>{
-          const data= res.data;
-          this.listPasien=data;
-      })
+  mounted() {
+    Request.get("/api/user/pasien").then((res) => {
+      const data = res.data;
+      this.listPasien = data;
+      this.$nextTick(() => {
+        $("#dataTable").DataTable();
+      });
+    });
   },
   methods: {
-    editModalPasien:function(user){
-        this.editDataPasien=user;
+    editModalPasien: function (user) {
+      this.editDataPasien = user;
     },
-    deletePasien: function(id){
-        this.$swal({
-              title:"Hapus Data Pasien",
-              text:"Apakah Anda yakin ingin menghapus data Pasien ini?",
-              confirmButtonText:"Ya",
-              cancelButtonText:"Batal",
-              showCancelButton:true,
-              cancelButtonColor:"red"
-          }).then(ans=>{
-              if(ans.isConfirmed){
-                    Request.delete("/api/user/pasien/"+id).then(res=>{
-                        this.$router.go(0)
-                    })
-              }
-          }).catch(err=>{
-
-          })
-        console.log("delete user id",id)
+    deletePasien: function (id) {
+      this.$swal({
+        title: "Hapus Data Pasien",
+        text: "Apakah Anda yakin ingin menghapus data Pasien ini?",
+        confirmButtonText: "Ya",
+        cancelButtonText: "Batal",
+        showCancelButton: true,
+        cancelButtonColor: "red",
+      })
+        .then((ans) => {
+          if (ans.isConfirmed) {
+            Request.delete("/api/user/pasien/" + id).then((res) => {
+              this.$router.go(0);
+            });
+          }
+        })
+        .catch((err) => {});
+      console.log("delete user id", id);
     },
-    uploadKTPEdit: function(e){
-
+    uploadKTPEdit: function (e) {
       const file = e.target.files[0];
-      this.editDataPasien.FileFotoKTP=file;
-
+      this.editDataPasien.FileFotoKTP = file;
     },
     uploadKTP: function (e) {
       const file = e.target.files[0];
@@ -638,29 +652,29 @@ export default {
           headers: { "Content-Type": "multipart/form-data" },
         })
           .then((respon) => {
-              this.$router.go(0)
+            this.$router.go(0);
           })
           .catch((err) => {});
       }
     },
-    simpanEditDataPasien: function(){
-        const form = new FormData();
+    simpanEditDataPasien: function () {
+      const form = new FormData();
       // const test= objectToFor
       for (let key in this.editDataPasien) {
         const val = this.editDataPasien[key];
         if (val) form.append(key, val);
       }
       if (isValidated(".requiredEdit")) {
-        Request.post("/api/user/pasien/"+this.editDataPasien.IDPasien, form, {
+        Request.post("/api/user/pasien/" + this.editDataPasien.IDPasien, form, {
           headers: { "Content-Type": "multipart/form-data" },
         })
           .then((respon) => {
-              this.$router.go(0)
+            this.$router.go(0);
             // console.log(respon)
           })
           .catch((err) => {});
       }
-    }
+    },
   },
 };
 </script>

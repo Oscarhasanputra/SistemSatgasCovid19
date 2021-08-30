@@ -148,22 +148,24 @@
               </tr>
               <tr>
                 <th>Obat</th>
-                <td>
-                  <div
-                    class="d-flex flex-row flex-wrap"
-                    v-if="editDataKonsultasi.detail"
-                  >
-                    <div
-                      class="btn btn-primary mx-2 my-2"
-                      v-for="(obat, index) in editDataKonsultasi.detail"
-                      :key="index"
-                    >
-                      {{ obat.obat && obat.obat.NamaObat }}
-                      <div class="fw-bold text-white">({{ obat.Qty }})</div>
-                    </div>
-                  </div>
-                  <div v-else>Tidak ada</div>
+                <td v-if="editDataKonsultasi.detail">
+                  <table id="editTable" class="table">
+                      <thead>
+                        <tr>
+                          <th>Obat</th>
+                          <th>Qty</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(obat,index) in editDataKonsultasi.detail" :key="index">
+                           <td>{{obat.obat && obat.obat.NamaObat}}</td>
+                           <td>{{obat.Qty}}</td>
+                        </tr>
+                      </tbody>
+                  </table>
+                 
                 </td>
+                <td v-else> Tidak Ada</td>
               </tr>
 
               <tr>
@@ -209,33 +211,48 @@
             <table class="table">
               <tr>
                 <th>Nama Pasien</th>
-                <td>{{ editDataKonsultasi.NamaPasien }}</td>
+                <td>{{ editDataKonsultasi.pasien.NamaPasien }}</td>
               </tr>
               <tr>
                 <th>Dokter</th>
                 <td>
-                  <select
-                    name="Dokter"
-                    v-model="editDataKonsultasi.IDDokter"
-                    class="requiredSave"
+                    <AutoComplete
+                  :search="search"
+                  :placeholder="editDataKonsultasi.dokter && editDataKonsultasi.dokter.Nama? `${editDataKonsultasi.dokter.Nama}`:`Cari Dokter`"
+                  aria-label="Cari Dokter"
+                  @submit="selectedDokter"
+                  :get-result-value="getResultVal"
                   >
-                    <option
-                      v-for="(dokter, index) in listDokter"
-                      :key="index"
-                      nama="dokter"
-                      :value="dokter.IDUser"
-                    >
-                      {{ dokter.Nama }}
-                    </option>
-                  </select>
+                  <template #result="{result,props}">
+                    <li v-bind="props" class="autocomplete-result">{{result.Nama}}</li>
+                  </template>
+
+                  </AutoComplete>
                 </td>
               </tr>
+              <!-- <tr>
+                <th>Oksigen</th>
+                <td>
+                    <AutoComplete
+                  :search="search"
+                  placeholder="Cari Obat"
+                  aria-label="Cari Obat"
+                  @submit="selectedDokter"
+                  :get-result-value="getResultVal"
+                  >
+                  <template #result="{result,props}">
+                    <li v-bind="props" class="autocomplete-result">{{result.Nama}}</li>
+                  </template>
+
+                  </AutoComplete>
+                </td>
+              </tr> -->
               <tr>
                 <th>Status</th>
                 <td>
                   <select
                     v-model="editDataKonsultasi.Status"
-                    class="requiredSave"
+                    class="requiredSave form-select"
                   >
                     <option nama="dokter" value="Menunggu">Menunggu</option>
                     <option nama="dokter" value="Konsultasi">Konsultasi</option>
@@ -260,7 +277,13 @@
 <script>
 import { isValidated } from "../../utilities/validate";
 import Request from "../../utilities/request";
+
+import "@trevoreyre/autocomplete-vue/dist/style.css"
+import AutoComplete from "@trevoreyre/autocomplete-vue";
 export default {
+  components:{
+    AutoComplete
+  },
   data() {
     return {
       editDataKonsultasi: {
@@ -278,20 +301,34 @@ export default {
     this.getKonsultasi();
     Request.get("/api/user/dokter").then((res) => {
       this.listDokter = res.data;
+      this.$nextTick(() => {
+          $("#dataTable").DataTable();
+          $("#editTable").DataTable({
+          searching:false,
+          info:false,
+        })
+        }); 
     });
   },
   methods: {
+    selectedDokter:function(dokter){
+        this.editDataKonsultasi.IDDokter=dokter.IDUser;
+    },
+    search:function(){
+        return this.listDokter;
+    },
+    getResultVal:function(dokter){
+        return dokter.Nama;
+    },
     getKonsultasi: function (status = "") {
       Request.get("/api/konsultasi", { Status: status }).then((res) => {
         this.listKonsultasi = res.data;
-        this.$nextTick(() => {
-          $("#dataTable").DataTable();
-        });
+        
       });
     },
     prosesModal: function (konsultasi) {
-      // console.log(konsultasi)
       this.editDataKonsultasi = konsultasi;
+      
     },
     ajukanProses: function () {
       const data = {

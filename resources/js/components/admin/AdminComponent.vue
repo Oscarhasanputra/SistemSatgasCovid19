@@ -32,11 +32,10 @@
             </thead>
 
             <tbody>
-                
               <tr v-for="(user, index) in usersAdmin" :key="user.IDUser">
-                <td>{{index+1}}</td>
-                <td>{{user.Username}}</td>
-                <td>{{user.Nama}}</td>
+                <td>{{ index + 1 }}</td>
+                <td>{{ user.Username }}</td>
+                <td>{{ user.Nama }}</td>
                 <td>************</td>
                 <td>
                   <button
@@ -48,7 +47,13 @@
                   >
                     Edit
                   </button>
-                  <button type="button" class="btn btn-danger" @click="deleteUser(user)">Delete</button>
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    @click="deleteUser(user)"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -85,19 +90,42 @@
             <table class="table">
               <tr>
                 <th>Username ID</th>
-                <td>{{editUser.Username}}</td>
+                <td>{{ editUser.Username }}</td>
               </tr>
               <tr>
                 <th>Nama</th>
-                <td><input type="text" class="requiredEdit" name="Nama Admin" v-model="editUser.Nama"/></td>
+                <td>
+                  <input
+                    type="text"
+                    class="requiredEdit"
+                    name="Nama Admin"
+                    v-model="editUser.Nama"
+                  />
+                </td>
               </tr>
               <tr>
                 <th>Password</th>
-                <td><input type="password" class="requiredEdit" name="Password" id="" v-model="editUser.Password"/></td>
+                <td>
+                  <input
+                    type="password"
+                    class="requiredEdit"
+                    name="Password"
+                    id=""
+                    v-model="editUser.Password"
+                  />
+                </td>
               </tr>
               <tr>
                 <th>Confirm Password</th>
-                <td><input type="password" class="requiredEdit" name="Confirm Password" id="" v-model="editUser.ConfirmPassword"/></td>
+                <td>
+                  <input
+                    type="password"
+                    class="requiredEdit"
+                    name="Confirm Password"
+                    id=""
+                    v-model="editUser.ConfirmPassword"
+                  />
+                </td>
               </tr>
             </table>
           </div>
@@ -144,25 +172,61 @@
               <tr>
                 <th>Username ID</th>
                 <td>
-                  <input type="text" class="requiredTambah" name="Username" id="" v-model="dataAdmin.Username"/>
+                  <input
+                    type="text"
+                    class="requiredTambah"
+                    name="Username"
+                    id=""
+                    v-model="dataAdmin.Username"
+                  />
                 </td>
               </tr>
               <tr>
                 <th>Nama</th>
-                <td><input type="text" class="requiredTambah" name="Nama Admin" id="" v-model="dataAdmin.Nama"/></td>
+                <td>
+                  <input
+                    type="text"
+                    class="requiredTambah"
+                    name="Nama Admin"
+                    id=""
+                    v-model="dataAdmin.Nama"
+                  />
+                </td>
               </tr>
               <tr>
                 <th>Password</th>
-                <td><input type="password" class="requiredTambah" name="Password" id="" v-model="dataAdmin.Password"/></td>
+                <td>
+                  <input
+                    type="password"
+                    class="requiredTambah"
+                    name="Password"
+                    id=""
+                    v-model="dataAdmin.Password"
+                  />
+                </td>
               </tr>
               <tr>
                 <th>Confirm Password</th>
-                <td><input type="password" class="requiredTambah" name="Confirm Password" id="" v-model="dataAdmin.ConfirmPassword"/></td>
+                <td>
+                  <input
+                    type="password"
+                    class="requiredTambah"
+                    name="Confirm Password"
+                    id=""
+                    v-model="dataAdmin.ConfirmPassword"
+                  />
+                </td>
               </tr>
             </table>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" @click="saveDataAdmin">Simpan</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="saveDataAdmin"
+            >
+              Simpan
+            </button>
             <button type="button" class="btn btn-danger">Batal</button>
           </div>
         </div>
@@ -171,83 +235,85 @@
   </div>
 </template>
 <script>
-import {isValidated} from "../../utilities/validate"
-import Request from "../../utilities/request"
+import { isValidated } from "../../utilities/validate";
+import Request from "../../utilities/request";
 export default {
   data() {
     return {
       dataAdmin: {},
-      usersAdmin:[],
-      editUser:{}
+      usersAdmin: [],
+      editUser: {},
     };
   },
   mounted() {
     // console.log("component mounted")
-      Request.get("/api/user/admin").then(res=>{
-          const data= res.data;
-          this.usersAdmin=data;
-          console.log(data);
-      }).catch(err=>{
-        console.log(err);
+    Request.get("/api/user/admin")
+      .then((res) => {
+        const data = res.data;
+        this.usersAdmin = data;
+        this.$nextTick(() => {
+          $("#dataTable").DataTable();
+        });
       })
+      .catch((err) => {
+        console.log(err);
+      });
     // console.log("admin component mounted");
   },
   methods: {
-      deleteUser : function(user){
-          this.$swal({
-              title:"Hapus Data User",
-              text:"Apakah Anda yakin ingin menghapus data User ini?",
-              confirmButtonText:"Ya",
-              cancelButtonText:"Batal",
-              showCancelButton:true,
-              cancelButtonColor:"red"
-          }).then(ans=>{
-              if(ans.isConfirmed){
-                    Request.delete("/api/user/admin/"+user.IDUser).then(res=>{
-                        this.$router.go(0)
-                    })
-              }
-          }).catch(err=>{
+    deleteUser: function (user) {
+      this.$swal({
+        title: "Hapus Data User",
+        text: "Apakah Anda yakin ingin menghapus data User ini?",
+        confirmButtonText: "Ya",
+        cancelButtonText: "Batal",
+        showCancelButton: true,
+        cancelButtonColor: "red",
+      })
+        .then((ans) => {
+          if (ans.isConfirmed) {
+            Request.delete("/api/user/admin/" + user.IDUser).then((res) => {
+              this.$router.go(0);
+            });
+          }
+        })
+        .catch((err) => {});
+    },
+    editModal: function (user) {
+      this.editUser = user;
+      delete this.editUser.Password;
+    },
+    editDataAdmin: function () {
+      if (isValidated(".requiredEdit")) {
+        if (this.editUser.Password != this.editUser.ConfirmPassword)
+          return this.$swal({
+            title: "Form Kosong",
+            text: " Pastikan Konfirmasi Password sama dengan Password ",
+            icon: "error",
+          });
 
-          })
-          
-      },
-      editModal : function(user){
-         
-          this.editUser=user;
-          delete this.editUser.Password;
-          
-      },
-      editDataAdmin: function () {
-
-        if(isValidated(".requiredEdit")){
-            if(this.editUser.Password!=this.editUser.ConfirmPassword)
-                return this.$swal({
-                      title:"Form Kosong",
-                        text:" Pastikan Konfirmasi Password sama dengan Password ",
-                        icon:"error",
-                })
-
-            Request.put("/api/user/admin/"+this.editUser.IDUser,this.editUser).then(res=>{
-                this.$router.go(0)
-            })
-        }
+        Request.put(
+          "/api/user/admin/" + this.editUser.IDUser,
+          this.editUser
+        ).then((res) => {
+          this.$router.go(0);
+        });
+      }
     },
     saveDataAdmin: function () {
+      if (isValidated(".requiredTambah")) {
+        if (this.dataAdmin.Password != this.dataAdmin.ConfirmPassword)
+          return this.$swal({
+            title: "Form Kosong",
+            text: " Pastikan Konfirmasi Password sama dengan Password ",
+            icon: "error",
+          });
 
-        if(isValidated(".requiredTambah")){
-            if(this.dataAdmin.Password!=this.dataAdmin.ConfirmPassword)
-                return this.$swal({
-                      title:"Form Kosong",
-                        text:" Pastikan Konfirmasi Password sama dengan Password ",
-                        icon:"error",
-                })
-
-            Request.post("/api/user/admin",this.dataAdmin).then(res=>{
-                // console.log(res.data)
-                this.$router.go(0)
-            })
-        }
+        Request.post("/api/user/admin", this.dataAdmin).then((res) => {
+          // console.log(res.data)
+          this.$router.go(0);
+        });
+      }
     },
   },
 };

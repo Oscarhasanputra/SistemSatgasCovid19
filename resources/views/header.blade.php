@@ -6,7 +6,6 @@
   <meta name="csrf-token" value="{{ csrf_token() }}" />
 
   <link href="{{ mix('css/app.css') }}" type="text/css" rel="stylesheet" />
-
   <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;700;900&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href={{asset('/css/bootstrap.min.css')}}>

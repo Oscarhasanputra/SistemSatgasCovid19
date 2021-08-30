@@ -14,13 +14,21 @@ class Pinjam extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['IDPasien','IDOxy','TglPinjam','TglKembali','IDAdmin'
+    protected $fillable = ['IDPasien','IDOxygen','IDOxymeter','TglKirim','TglKembali','IDAdmin'
     ,'Sumber','Gejala','Saturasi','TanggalSwab','BuktiSwab','KonsumsiObat','PernahBerobat'
-    ,'KetersediaanTabung','BuktiSaturasi','JenisPinjaman','AsalPinjam','created_at'];
+    ,'KetersediaanTabung','BuktiSaturasi','JenisPinjaman','AsalPinjam','created_at','Status'];
     
     public $incrementing = false;
 
     public function pasien(){
         return $this->belongsTo(Pasien::class,"IDPasien");
+    }
+
+    public function oxymeter(){
+        return $this->belongsTo(Oxygen::class,'IDOxymeter');
+    }
+    public function oxygen(){
+
+        return $this->belongsTo(Oxygen::class,'IDOxygen');
     }
 }

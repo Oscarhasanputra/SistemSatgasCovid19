@@ -95,9 +95,11 @@
         </div>
 
         <div class="row justify-content-center">
-          <div
+          <template 
+            v-for="(berita, index) in listBerita">
+          <router-link
+            :to="'/berita/'+berita.IDBerita"
             class="col-10 col-md-4 my-3"
-            v-for="(berita, index) in listBerita"
             :key="index"
           >
             <div class="post-entry">
@@ -131,7 +133,8 @@
                 {{ berita.Judul }}
               </h3>
             </div>
-          </div>
+          </router-link>
+          </template>
         </div>
       </div>
     </div>

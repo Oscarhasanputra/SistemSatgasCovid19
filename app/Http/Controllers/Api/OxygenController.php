@@ -50,8 +50,8 @@ class OxygenController extends Controller
         //check data transaksi pinjam dari pasien
         
          $dataPinjamPasien=Pinjam::where("IDPasien","=",$savedDataPasien->IDPasien)
-                            ->where("Status","=","Menunggu")
-                            ->where("JenisPinjaman","=","Oxygen")
+                            ->whereIn("Status",["Menunggu",'Dipinjamkan'])
+                            ->whereIn("JenisPinjaman",["Oxygen","Oxygen & Oxymeter"])
                             ->get();
         // jika data pinjam pasien masih dalam proses maka tidak dapat mengajukan peminjaman
         if($dataPinjamPasien->count()>0){
@@ -63,16 +63,23 @@ class OxygenController extends Controller
 
         try {
             //simpan bukti foto swab dan foto saturasi
-            $dataTransaksiPinjam=$this->saveDataPinjam($dataTransaksiPinjam,$request);
+            if($request->hasFile('BuktiSwab') && $request->hasFile("BuktiSaturasi"))
+                $dataTransaksiPinjam=$this->saveDataPinjam($dataTransaksiPinjam,$request);
             //check apakah fotoktp dari pasien sudah ada atau belum
-            if(!(Storage::disk("public")->exists($savedDataPasien->FotoKTP))){
-                
-                $file=Storage::disk("public")->putFileAs("images/uploaded",$request->file("FotoKTP"),"FotoKTP{$savedDataPasien->NoHP}-{$date}.png");
-                $savedDataPasien->FotoKTP=$file;
-                // mengupdate fotoktp pasien
-                $savedDataPasien->save();
+            if(!(file_exists(public_path()."/".$savedDataPasien->FotoKTP))){
+                if($request->hasFile("FotoKTP")){
+
+                    $file="FotoKTP{$savedDataPasien->NoHP}-{$date}.png";
+
+                    $request->file("FotoKTP")->move(public_path()."/images/uploaded/",$file);
+                    // $file=Storage::disk("public")->putFileAs("images/uploaded",$request->file("FotoKTP"),"FotoKTP{$savedDataPasien->NoHP}-{$date}.png");
+                    $savedDataPasien->FotoKTP="images/uploaded/".$file;
+                    // mengupdate fotoktp pasien
+                    $savedDataPasien->save();
+                }
             }
         } catch (\Throwable $th) {
+            // throw $th;
             // terjadi ketika file foto yang diinginkan tidak diupload oleh user
             // Storage::disk("public"->delete)
             return response(['message'=>"Terjadi Kegagalan dalam Memproses Data Anda, Mohon Ulangi Lagi"],Response::HTTP_BAD_REQUEST);
@@ -90,14 +97,27 @@ class OxygenController extends Controller
         try {
 
             $date=Carbon::now();
-            $file=Storage::disk("public")->putFileAs("images/uploaded",$request->file("BuktiSwab"),"BuktiSwab{$date}.png");
-            $dataTransaksiPinjam['BuktiSwab']=$file;
-            $fotoSaturasi=Storage::disk("public")->putFileAs("images/uploaded",$request->file("BuktiSwab"),"BuktiSaturasi{$date}.png");
-            $dataTransaksiPinjam['BuktiSaturasi']=$fotoSaturasi;
+            $fileName="BuktiSwab{$date}.png";
+            $request->file("BuktiSwab")->move(public_path()."/images/uploaded/",$fileName);
+
+            // $file=Storage::disk("public")->putFileAs("images/uploaded",$request->file("BuktiSwab"),"BuktiSwab{$date}.png");
+            
+            $dataTransaksiPinjam['BuktiSwab']="images/uploaded/".$fileName;
+
+            $fotoSaturasi="BuktiSaturasi{$date}.png";
+            $request->file("BuktiSaturasi")->move(public_path().'/images/uploaded/',$fotoSaturasi);
+            // $fotoSaturasi=Storage::disk("public")->putFileAs("images/uploaded",$request->file("BuktiSwab"),"BuktiSaturasi{$date}.png");
+            $dataTransaksiPinjam['BuktiSaturasi']="images/uploaded/".$fotoSaturasi;
             $dataTransaksiPinjam['JenisPinjaman']="Oxygen";
         } catch (\Throwable $th) {
-            //throw $th;
-            Storage::disk("public")->delete([$dataTransaksiPinjam['BuktiSwab'],$dataTransaksiPinjam['BuktiSaturasi']]);
+            // throw $th;
+            if(file_exists(public_path()."/".$dataTransaksiPinjam['BuktiSwab']))
+                unlink(public_path()."/".$dataTransaksiPinjam['BuktiSwab']);
+
+            if(file_exists(public_path()."/".$dataTransaksiPinjam['BuktiSaturasi']))
+                unlink(public_path()."/".$dataTransaksiPinjam['BuktiSaturasi']);
+
+            // Storage::disk("public")->delete([$dataTransaksiPinjam['BuktiSwab'],$dataTransaksiPinjam['BuktiSaturasi']]);
             throw $th;
         }
         return $dataTransaksiPinjam;

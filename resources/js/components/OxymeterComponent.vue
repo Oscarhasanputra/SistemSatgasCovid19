@@ -148,7 +148,7 @@
             </div>
             <img
               v-if="disabled.FotoKTP"
-              :src="'/storage/' + formPasien.FotoKTP"
+              :src="'/' + formPasien.FotoKTP"
               height="100"
               width="100"
             />
@@ -221,7 +221,7 @@
                 max="100"
                 min="0"
                 name="Saturasi"
-                class="form-control required col-1 d-inline"
+                class="form-control required col-4 col-sm-2 d-inline"
                 id="saturasi"
                 v-model="formPinjam.Saturasi"
               />

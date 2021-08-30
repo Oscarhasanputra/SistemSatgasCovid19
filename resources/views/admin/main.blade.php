@@ -11,6 +11,7 @@
 
     <title>Dashboard</title>
 
+    <link rel="icon" href={{asset("images/logo.jpg")}} type="image/gif" sizes="16x16">
     <!-- Custom fonts for this template-->
     {{-- <link href={{asset("/css/all.min.css")}} rel="stylesheet" type="text/css"> --}}
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.0/css/jquery.dataTables.css">

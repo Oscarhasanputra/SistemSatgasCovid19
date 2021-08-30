@@ -249,7 +249,7 @@
                 <td>
                   <AutoComplete
                     :search="oxygen"
-                    :placeholder="oxygen().length>0 ? `Cari Oxygen`:`Oxygen Tidak Tersedia`"
+                    :placeholder="oxygen().length>0 ? `Cari Oxygen`:(pesan.oxygen?`${pesan.oxygen}`:`Oxygen Tidak Tersedia`)"
                     aria-label="Cari Oxygen"
                     @submit="selectedOxy"
                     :get-result-value="getResultVal"
@@ -272,7 +272,7 @@
                 <td>
                   <AutoComplete
                     :search="oxymeter"
-                    :placeholder="oxymeter().length>0 ? `Cari Oxymeter`:`Oxymeter Tidak Tersedia`"
+                    :placeholder="oxymeter().length>0 ? `Cari Oxymeter`:(pesan.oxymeter?`${pesan.oxymeter}`:`Oxymeter Tidak Tersedia`)"
                     aria-label="Cari Oxymeter"
                     @submit="selectedOxymeter"
                     :get-result-value="getResultVal"
@@ -324,6 +324,10 @@ export default {
       listPinjam: [],
       listOxy: [],
       detailPinjam: {},
+      pesan:{
+        oxygen:"",
+        oxymeter:"",
+      }
     };
   },
   mounted() {
@@ -345,10 +349,19 @@ export default {
 
     oxygen: function () {
       const filtered = this.listOxy.filter((oxy) => oxy.Jenis == "Oxygen");
+      if(this.detailPinjam.oxygen){
+          this.pesan.oxygen="Oxygen Telah Diberikan pada Pasien"
+          // return null;
+          return "";
+      }
       return filtered;
     },
     oxymeter: function () {
       const filtered = this.listOxy.filter((oxy) => oxy.Jenis == "Oxymeter");
+       if(this.detailPinjam.oxymeter){
+          this.pesan.oxymeter="Oxymeter Telah Diberikan pada Pasien"
+          return "";
+      }
       return filtered;
     },
     filterStatus: function () {
@@ -364,6 +377,7 @@ export default {
     },
     editModal: function (dataPinjam) {
       this.detailPinjam = dataPinjam;
+      this.pesan={}
     },
     simpanData: function () {
       const {IDOxygen,IDOxymeter}=this.detailPinjam;

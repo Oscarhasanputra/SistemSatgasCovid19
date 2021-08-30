@@ -214,33 +214,21 @@ export default {
       }
     },
     checking: function () {
-      Request.get("/api/admin/test").then(res=>{
-        console.log("testing")
-        console.log(res.data)
-          Request.get("/api/admin").then(res=>{
-        console.log(res.data)
-      }).catch(err=>{
-        console.log(err.response)
+     
+         
+      Request.get("/api/checkpasien", {
+        IDPasien: "PSN" + this.formPasien.NoHP,
       })
-      }).catch(err=>{
-        console.log("testing")
-        console.log(err.response)
-      })
-    
-      
-      // Request.get("/api/checkpasien", {
-      //   IDPasien: "PSN" + this.formPasien.NoHP,
-      // })
-      //   .then((response) => {
-      //     const data = response.data.DataPasien;
+        .then((response) => {
+          const data = response.data.DataPasien;
        
-      //     this.formPasien = {...data};
-      //     this.disabled = { ...data };
-      //   })
-      //   .catch((err) => {
-      //     console.log(err.response);
-      //     this.disabled = {};
-      //   });
+          this.formPasien = {...data};
+          this.disabled = { ...data };
+        })
+        .catch((err) => {
+          console.log(err.response);
+          this.disabled = {};
+        });
     },
   },
 };

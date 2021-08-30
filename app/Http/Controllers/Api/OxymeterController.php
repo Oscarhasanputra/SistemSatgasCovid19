@@ -46,8 +46,8 @@ class OxymeterController extends Controller
         //check data transaksi pinjam dari pasien
         
         $dataPinjamPasien=Pinjam::where("IDPasien","=",$savedDataPasien->IDPasien)
-                            ->where("Status","=","Menunggu")
-                            ->where("JenisPinjaman","=","Oxymeter")
+                            ->whereIn("Status",["Menunggu",'Dipinjamkan'])
+                            ->whereIn("JenisPinjaman",["Oxymeter","Oxygen & Oxymeter"])
                             ->get();
         // jika data pinjam pasien masih dalam proses maka tidak dapat mengajukan peminjaman
         if($dataPinjamPasien->count()>0){
@@ -59,14 +59,20 @@ class OxymeterController extends Controller
 
         try {
             //simpan bukti foto swab 
-            $dataTransaksiPinjam=$this->saveDataPinjam($dataTransaksiPinjam,$request);
+            if($request->hasFile("BuktiSwab"))
+                $dataTransaksiPinjam=$this->saveDataPinjam($dataTransaksiPinjam,$request);
             //check apakah fotoktp dari pasien sudah ada atau belum
-            if(!(Storage::disk("public")->exists($savedDataPasien->FotoKTP))){
-                
-                $file=Storage::disk("public")->putFileAs("images/uploaded",$request->file("FotoKTP"),"FotoKTP{$savedDataPasien->NoHP}-{$date}.png");
-                $savedDataPasien->FotoKTP=$file;
-                // mengupdate fotoktp pasien
-                $savedDataPasien->save();
+            if(!(file_exists(public_path()."/".$savedDataPasien->FotoKTP))){
+                if($request->hasFile("FotoKTP")){
+
+                    $file="FotoKTP{$savedDataPasien->NoHP}-{$date}.png";
+                    $request->file("FotoKTP")->move(public_path()."/images/uploaded/",$file);
+                    // $file=Storage::disk("public")->putFileAs("images/uploaded",$request->file("FotoKTP"),"FotoKTP{$savedDataPasien->NoHP}-{$date}.png");
+                    
+                    $savedDataPasien->FotoKTP="images/uploaded/".$file;
+                    // mengupdate fotoktp pasien
+                    $savedDataPasien->save();
+                }
             }
         } catch (\Throwable $th) {
             // terjadi ketika file foto yang diinginkan tidak diupload oleh user
@@ -85,13 +91,17 @@ class OxymeterController extends Controller
         try {
 
             $date=Carbon::now();
-            $file=Storage::disk("public")->putFileAs("images/uploaded",$request->file("BuktiSwab"),"BuktiSwab{$date}.png");
-            $dataTransaksiPinjam['BuktiSwab']=$file;
+            $file="BuktiSwab{$date}.png";
+            $request->file("BuktiSwab")->move(public_path()."/images/uploaded/",$file);
+            // $file=Storage::disk("public")->putFileAs("images/uploaded",$request->file("BuktiSwab"),"BuktiSwab{$date}.png");
+            $dataTransaksiPinjam['BuktiSwab']="images/uploaded/".$file;
             $dataTransaksiPinjam['JenisPinjaman']="Oxymeter";
         } catch (\Throwable $th) {
             //throw $th;
+            if(file_exists(public_path()."/".$dataTransaksiPinjam['BuktiSwab']))
+                unlink(public_path()."/".$dataTransaksiPinjam['BuktiSwab']);
 
-            Storage::disk("public")->delete($dataTransaksiPinjam['BuktiSwab']);
+            // Storage::disk("public")->delete($dataTransaksiPinjam['BuktiSwab']);
             throw $th;
         }
         return $dataTransaksiPinjam;

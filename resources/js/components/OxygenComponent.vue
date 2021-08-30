@@ -150,7 +150,7 @@
                   @change="uploadKTP"
                 />
               </div>
-              <img v-if="disabled.FotoKTP" :src="'/storage/'+formPasien.FotoKTP" height="100" width="100">
+              <img v-if="disabled.FotoKTP" :src="'/'+formPasien.FotoKTP" height="100" width="100">
 
 
               <div class="form-group">
@@ -367,7 +367,9 @@ export default {
 
             this.$router.go(0)
           })
-          .catch((err) => {});
+          .catch((err) => {
+            console.log(err.response)
+          });
       }
     },
     uploadKTP: function (e) {

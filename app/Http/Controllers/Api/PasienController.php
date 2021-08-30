@@ -45,8 +45,14 @@ class PasienController extends Controller
             //throw $th;
             // ketika data valid dan pasien belum terdaftar;
                 try {
-                    $file=Storage::disk("public")->putFileAs("images/uploaded",$request->file("FotoKTP"),"FotoKTP{$request->NoHP}-{$date}.png");
-                    $dataPasien['FotoKTP']=$file;
+                    if($request->hasFile("FotoKTP")){
+
+                        $file="FotoKTP{$request->NoHP}-{$date}.png";
+    
+                        $request->file("FotoKTP")->move(public_path()."/images/uploaded/",$file);
+                       
+                        $dataPasien['FotoKTP']="images/uploaded/".$file;
+                    }
                     //code...
                 } catch (\Throwable $th) {
                     //throw $th;
@@ -69,12 +75,20 @@ class PasienController extends Controller
             // return $savedDataPasien;
             if($request->hasFile("FileFotoKTP")){
                 try {
-                    $file=Storage::disk("public")->putFileAs("images/uploaded",$request->file("FileFotoKTP"),"FotoKTP{$request->NoHP}-{$date}.png");
-                    $bool=Storage::disk("public")->exists($request->FotoKTP);
-                    if($bool)
-                        Storage::disk("public")->delete($request->FotoKTP);
+                        $file="FotoKTP{$request->NoHP}-{$date}.png";
+    
+                        $request->file("FileFotoKTP")->move(public_path()."/images/uploaded/",$file);
+                       
+                        $dataPasien['FotoKTP']="images/uploaded/".$file;
                     
-                    $dataPasien['FotoKTP']=$file;
+                    
+                    // $file=Storage::disk("public")->putFileAs("images/uploaded",$request->file("FileFotoKTP"),"FotoKTP{$request->NoHP}-{$date}.png");
+            
+                    if(file_exists(public_path()."/".$request->FotoKTP))
+                        unlink(public_path()."/".$request->FotoKTP);
+                        // Storage::disk("public")->delete($request->FotoKTP);
+                    
+                    // $dataPasien['FotoKTP']=$file;
                     //code...
                 } catch (\Throwable $th) {
                     //throw $th;
@@ -101,8 +115,9 @@ class PasienController extends Controller
     public function deleteDataPasien($id){
         $dataPasien=Pasien::find($id);
         try {
-            if(Storage::disk('public')->exists($dataPasien->FotoKTP)){
-                Storage::disk('public')->delete($dataPasien->FotoKTP);
+            
+            if( file_exists(public_path()."/".$dataPasien->FotoKTP)){
+                unlink(public_path()."/".$dataPasien->FotoKTP);
             }
             $dataPasien->delete();
             //code...

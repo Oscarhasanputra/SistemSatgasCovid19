@@ -286,7 +286,7 @@
                     <option nama="dokter" value="Ya">Ya</option>
                     <option nama="dokter" value="Tidak">Tidak</option>
                   </select>
-                  <span class="text-danger" v-if="editDataKonsultasi.StatusPeminjaman">! Masih Terdapat Pengajuan Peminjaman untuk Pasien terkait</span>
+                  <span class="text-danger" v-if="editDataKonsultasi.StatusPeminjaman"> ! {{editDataKonsultasi.ButuhOksigen? 'Pengajuan Peminjaman Telah Dilakukan pada Konsultasi ini':'Masih Terdapat Pengajuan Peminjaman untuk Pasien terkait'}}</span>
                 </td>
               </tr>
               <tr>
@@ -301,7 +301,9 @@
                     <option nama="dokter" value="Ya">Ya</option>
                     <option nama="dokter" value="Tidak">Tidak</option>
                   </select>
-                  <span class="text-danger" v-if="editDataKonsultasi.StatusPeminjaman">! Masih Terdapat Pengajuan Peminjaman untuk Pasien terkait</span>
+
+                  <span class="text-danger" v-if="editDataKonsultasi.StatusPeminjaman"> ! {{editDataKonsultasi.ButuhOxymeter? 'Pengajuan Peminjaman Telah Dilakukan pada Konsultasi ini':'Masih Terdapat Pengajuan Peminjaman untuk Pasien terkait'}}</span>
+   
                 </td>
               </tr>
             </table>
@@ -390,7 +392,7 @@ export default {
     },
     prosesModal: function (konsultasi) {
       this.editDataKonsultasi = konsultasi;
-      if(konsultasi.pasien && konsultasi.pasien.pinjam.length>0){
+      if((konsultasi.pasien && konsultasi.pasien.pinjam.length>0)||(konsultasi.ButuhOksigen || konsultasi.ButuhOxymeter) ){
         this.editDataKonsultasi.StatusPeminjaman=true;
       }
       this.editData = {};

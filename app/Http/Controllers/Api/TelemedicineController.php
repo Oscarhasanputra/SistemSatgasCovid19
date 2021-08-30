@@ -53,7 +53,7 @@ class TelemedicineController extends Controller
             $savedDataPasien=Pasien::create($dataPasien);
         }
         $dataKonsultasiPasien=Telemedicine::where("IDPasien","=",$savedDataPasien->IDPasien)
-                            ->where("Status","=","Menunggu")
+                            ->whereIn("Status",["Menunggu",'Konsultasi'])
                             ->get();
         // jika data Konsultasi pasien masih dalam proses maka tidak dapat mengajukan Konsultasi
         if($dataKonsultasiPasien->count()>0){

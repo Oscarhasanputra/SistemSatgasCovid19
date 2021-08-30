@@ -268,7 +268,7 @@
                   />
                   <img
                     v-if="editDataPasien.FotoKTP"
-                    :src="'/storage/' + editDataPasien.FotoKTP"
+                    :src="'/'+ editDataPasien.FotoKTP"
                     height="100"
                     width="100"
                   />

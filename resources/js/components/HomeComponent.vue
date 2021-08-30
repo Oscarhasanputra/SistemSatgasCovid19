@@ -20,7 +20,7 @@
           </div>
           <div class="col-lg-6">
             <figure class="illustration">
-              <img src="images/logo-home.jpeg" alt="Image" class="img-fluid" />
+              <img src="/images/logo.jpg" alt="Image" class="img-fluid" />
             </figure>
           </div>
           <div class="col-lg-6"></div>

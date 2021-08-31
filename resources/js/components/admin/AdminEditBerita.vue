@@ -85,10 +85,9 @@ export default {
     });
     const toolbar = this.editor.getModule("toolbar");
     Request.get("/api/berita/" + id).then((res) => {
-      const data = res.data;
+      const data = res.data.berita;
       this.berita = data;
       const doc = this.editor.root;
-
       doc.innerHTML = data.Content;
       //   console.log(this.editor.root)
       const elems = doc.querySelectorAll("img");

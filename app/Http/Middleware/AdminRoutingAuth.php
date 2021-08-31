@@ -24,6 +24,6 @@ class AdminRoutingAuth
             }
         }
        
-        return redirect("/");
+        return redirect(env("APP_URL")."/");
     }
 }

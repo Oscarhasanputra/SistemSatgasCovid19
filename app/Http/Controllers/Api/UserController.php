@@ -42,7 +42,7 @@ class UserController extends Controller
         if($guard instanceof AdminGuard){
             $guard->logout();
 
-            return redirect("/");
+            return redirect(env("APP_URL")."/");
         }
 
     }

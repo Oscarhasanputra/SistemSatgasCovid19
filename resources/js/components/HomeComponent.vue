@@ -171,7 +171,8 @@ export default {
           "text/html"
         );
         const img = doc.querySelector("img");
-        berita.overview = img.src;
+        if(img)
+          berita.overview = img.src;
       });
     });
     console.log("Component mounted.");

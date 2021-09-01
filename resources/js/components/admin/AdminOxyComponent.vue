@@ -251,7 +251,7 @@ export default {
       }
     },
     deleteOxy: function (id) {
-      console.log("delete", id);
+      // console.log("delete", id);
       this.$swal({
         title: "Hapus Data Oxygen",
         text: "Apakah Anda yakin ingin menghapus data Oxygen ini?",

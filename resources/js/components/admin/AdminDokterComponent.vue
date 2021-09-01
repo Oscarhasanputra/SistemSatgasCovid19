@@ -49,7 +49,7 @@
                   >
                     Edit
                   </button>
-                  <button type="button" class="btn btn-danger">Delete</button>
+                  <button type="button" class="btn btn-danger" @click="deleteDokter(dokter.IDUser)">Delete</button>
                 </td>
               </tr>
             </tbody>
@@ -296,6 +296,24 @@ export default {
           })
           .catch((err) => {});
       }
+    },
+    deleteDokter:function(id){
+       this.$swal({
+        title: "Hapus Data Dokter",
+        text: "Apakah Anda yakin ingin menghapus data Dokter ini?",
+        confirmButtonText: "Ya",
+        cancelButtonText: "Batal",
+        showCancelButton: true,
+        cancelButtonColor: "red",
+      })
+        .then((ans) => {
+          if (ans.isConfirmed) {
+            Request.delete("/api/user/dokter/" + id).then((res) => {
+              this.$router.go(0);
+            });
+          }
+        })
+        .catch((err) => {});
     },
     editData: function () {
       console.log("edit");

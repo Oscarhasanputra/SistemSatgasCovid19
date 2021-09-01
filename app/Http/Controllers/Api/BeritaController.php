@@ -8,6 +8,7 @@ use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Storage;
 
 class BeritaController extends Controller
 {
@@ -36,10 +37,19 @@ class BeritaController extends Controller
         if($request->hasFile("fileImages")){
             $files=$request->file("fileImages");
             foreach($files as $index=>$file){
-                $path=public_path()."/images/blog/";
+                
                 $fileName="blogImages-".$index."-".Carbon::now().'.png';
-                $file->move($path,$fileName);
-                array_push($filesReturn,"/images/blog/".$fileName);
+                try {
+
+                $path=Storage::disk("public")->putFileAs("/images/blog",$file,$fileName);
+                    //code...
+                } catch (\Throwable $th) {
+                    return response(['message'=>"Terjadi Kegagalan dalam mengupload Gambar"],Response::HTTP_BAD_REQUEST);
+                }
+                // $path=public_path()."/images/blog/";
+                
+                // $file->move($path,$fileName);
+                array_push($filesReturn,"/".$path);
                 // array_push($test,$file);
             }
         }
@@ -49,9 +59,16 @@ class BeritaController extends Controller
 
     public function deleteImages(Request $request){
         $files=$request->get("filesDeleted");
+       
         foreach($files as $file){
             if(file_exists(public_path().$file)){
-                unlink(public_path().$file);
+                try {
+                    //code...
+                    $path=Storage::disk("public")->delete($file);
+                } catch (\Throwable $th) {
+                    //throw $th;
+                }
+                // unlink(public_path().$file);
             }
         }
         return $files;
@@ -77,7 +94,7 @@ class BeritaController extends Controller
 
         Berita::updateOrCreate(['IDBerita'=>$request->IDBerita],$data);
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
             return response(['message'=>"Terjadi Kegagalan dalam mempublish Berita"],Response::HTTP_BAD_REQUEST);
      
         }

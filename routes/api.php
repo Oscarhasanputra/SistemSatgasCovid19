@@ -86,6 +86,7 @@ Route::middleware(['admin:admin,doctor'])->group(function(){
     Route::post('user/dokter', [UserController::class,'saveDataDokter']);
     Route::get("user/dokter",[UserController::class,'getDataDokter']);
     Route::put('user/dokter/{id}',[UserController::class,'updateDataDokter']);
+    Route::delete('user/dokter/{id}',[UserController::class,'deleteDataDokter']);
 
     Route::post("data/oxygen",[OxygenController::class,'saveDataOxy']);
     Route::get("data/oxygen",[OxygenController::class,'getAllData']);

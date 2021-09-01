@@ -141,5 +141,16 @@ class UserController extends Controller
         }
         return ['message'=>"User Berhasil diubah"];
     }
+
+    public function deleteDataDokter($id){
+        try {
+            User::find($id)->delete();
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response(['message'=>"Terjadi Kesalahan dalam menghapus Data Dokter"],Response::HTTP_BAD_REQUEST);
+     
+        }
+        return ['message'=>"Dokter Berhasil dihapus"];
+    }
     //
 }

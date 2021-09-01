@@ -69,11 +69,12 @@ class OxygenController extends Controller
             if(!(file_exists(public_path()."/".$savedDataPasien->FotoKTP))){
                 if($request->hasFile("FotoKTP")){
 
-                    $file="FotoKTP{$savedDataPasien->NoHP}-{$date}.png";
-
-                    $request->file("FotoKTP")->move(public_path()."/images/uploaded/",$file);
+                    // $file="FotoKTP{$savedDataPasien->NoHP}-{$date}.png";
+                    $file=Storage::disk("public")->putFileAs("images/uploaded",$request->file("FotoKTP"),"FotoKTP{$savedDataPasien->NoHP}-{$date}.png");
+                   
+                    // $request->file("FotoKTP")->move(public_path()."/images/uploaded/",$file);
                     // $file=Storage::disk("public")->putFileAs("images/uploaded",$request->file("FotoKTP"),"FotoKTP{$savedDataPasien->NoHP}-{$date}.png");
-                    $savedDataPasien->FotoKTP="images/uploaded/".$file;
+                    $savedDataPasien->FotoKTP="/".$file;
                     // mengupdate fotoktp pasien
                     $savedDataPasien->save();
                 }
@@ -97,25 +98,28 @@ class OxygenController extends Controller
         try {
 
             $date=Carbon::now();
-            $fileName="BuktiSwab{$date}.png";
-            $request->file("BuktiSwab")->move(public_path()."/images/uploaded/",$fileName);
+            // $fileName="BuktiSwab{$date}.png";
+            $file=Storage::disk("public")->putFileAs("images/uploaded",$request->file("BuktiSwab"),"BuktiSwab{$date}.png");
+                   
+            // $request->file("BuktiSwab")->move(public_path()."/images/uploaded/",$fileName);
 
             // $file=Storage::disk("public")->putFileAs("images/uploaded",$request->file("BuktiSwab"),"BuktiSwab{$date}.png");
             
-            $dataTransaksiPinjam['BuktiSwab']="images/uploaded/".$fileName;
+            $dataTransaksiPinjam['BuktiSwab']="/".$file;
 
-            $fotoSaturasi="BuktiSaturasi{$date}.png";
-            $request->file("BuktiSaturasi")->move(public_path().'/images/uploaded/',$fotoSaturasi);
-            // $fotoSaturasi=Storage::disk("public")->putFileAs("images/uploaded",$request->file("BuktiSwab"),"BuktiSaturasi{$date}.png");
-            $dataTransaksiPinjam['BuktiSaturasi']="images/uploaded/".$fotoSaturasi;
+            // $fotoSaturasi="BuktiSaturasi{$date}.png";
+            // $request->file("BuktiSaturasi")->move(public_path().'/images/uploaded/',$fotoSaturasi);
+            $fotoSaturasi=Storage::disk("public")->putFileAs("images/uploaded",$request->file("BuktiSaturasi"),"BuktiSaturasi{$date}.png");
+            $dataTransaksiPinjam['BuktiSaturasi']="/".$fotoSaturasi;
             $dataTransaksiPinjam['JenisPinjaman']="Oxygen";
         } catch (\Throwable $th) {
             // throw $th;
             if(file_exists(public_path()."/".$dataTransaksiPinjam['BuktiSwab']))
-                unlink(public_path()."/".$dataTransaksiPinjam['BuktiSwab']);
+                 Storage::disk("public")->delete($dataTransaksiPinjam['BuktiSwab']);
 
             if(file_exists(public_path()."/".$dataTransaksiPinjam['BuktiSaturasi']))
-                unlink(public_path()."/".$dataTransaksiPinjam['BuktiSaturasi']);
+                Storage::disk("public")->delete($dataTransaksiPinjam['BuktiSaturasi']);
+                // unlink(public_path()."/".$dataTransaksiPinjam['BuktiSaturasi']);
 
             // Storage::disk("public")->delete([$dataTransaksiPinjam['BuktiSwab'],$dataTransaksiPinjam['BuktiSaturasi']]);
             throw $th;

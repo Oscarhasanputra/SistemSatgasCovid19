@@ -65,11 +65,11 @@ class OxymeterController extends Controller
             if(!(file_exists(public_path()."/".$savedDataPasien->FotoKTP))){
                 if($request->hasFile("FotoKTP")){
 
-                    $file="FotoKTP{$savedDataPasien->NoHP}-{$date}.png";
-                    $request->file("FotoKTP")->move(public_path()."/images/uploaded/",$file);
-                    // $file=Storage::disk("public")->putFileAs("images/uploaded",$request->file("FotoKTP"),"FotoKTP{$savedDataPasien->NoHP}-{$date}.png");
+                    // $file="FotoKTP{$savedDataPasien->NoHP}-{$date}.png";
+                    // $request->file("FotoKTP")->move(public_path()."/images/uploaded/",$file);
+                    $file=Storage::disk("public")->putFileAs("images/uploaded",$request->file("FotoKTP"),"FotoKTP{$savedDataPasien->NoHP}-{$date}.png");
                     
-                    $savedDataPasien->FotoKTP="images/uploaded/".$file;
+                    $savedDataPasien->FotoKTP="/".$file;
                     // mengupdate fotoktp pasien
                     $savedDataPasien->save();
                 }
@@ -91,15 +91,16 @@ class OxymeterController extends Controller
         try {
 
             $date=Carbon::now();
-            $file="BuktiSwab{$date}.png";
-            $request->file("BuktiSwab")->move(public_path()."/images/uploaded/",$file);
-            // $file=Storage::disk("public")->putFileAs("images/uploaded",$request->file("BuktiSwab"),"BuktiSwab{$date}.png");
-            $dataTransaksiPinjam['BuktiSwab']="images/uploaded/".$file;
+            // $file="BuktiSwab{$date}.png";
+            // $request->file("BuktiSwab")->move(public_path()."/images/uploaded/",$file);
+            $file=Storage::disk("public")->putFileAs("images/uploaded",$request->file("BuktiSwab"),"BuktiSwab{$date}.png");
+            $dataTransaksiPinjam['BuktiSwab']="/".$file;
             $dataTransaksiPinjam['JenisPinjaman']="Oxymeter";
         } catch (\Throwable $th) {
             //throw $th;
             if(file_exists(public_path()."/".$dataTransaksiPinjam['BuktiSwab']))
-                unlink(public_path()."/".$dataTransaksiPinjam['BuktiSwab']);
+                Storage::disk("public")->delete($dataTransaksiPinjam['BuktiSwab']);
+                // unlink(public_path()."/".$dataTransaksiPinjam['BuktiSwab']);
 
             // Storage::disk("public")->delete($dataTransaksiPinjam['BuktiSwab']);
             throw $th;

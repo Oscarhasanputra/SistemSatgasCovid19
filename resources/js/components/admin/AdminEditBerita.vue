@@ -54,8 +54,9 @@ export default {
     };
   },
   mounted() {
-    const id = this.$route.params.id;
 
+    const id = this.$route.params.id;
+// console.log(id)
     var toolbarOptions = [
       ["bold", "italic", "underline", "strike"], // toggled buttons
       ["blockquote", "code-block"],
@@ -244,7 +245,7 @@ export default {
           })
           .then((res) => {
             const filesResponse = res.data;
-             console.log(filesResponse)
+            //  return
             elems.forEach((image) => {
               const imageSrc = $(image).attr("src");
               for (let i = 0; i < this.filesAwal.length; i++) {
@@ -254,6 +255,7 @@ export default {
                 } 
               }
               if(filesResponse[0]){
+                
                   image.src = filesResponse[0];
 
                     image.style.maxWidth="100%";
@@ -271,11 +273,16 @@ export default {
             axios
               .post("/api/berita", dataBerita)
               .then(async (res) => {
-                await axios.delete("/api/deleteImages", {
+                try {
+                    await axios.delete("/api/deleteImages", {
                   data: {
                     filesDeleted: fileDeleted,
                   },
                 });
+                } catch (error) {
+                  console.log(error)
+                }
+              
                 this.$swal.close();
                 //   axios.post("")
                 this.$swal
@@ -307,6 +314,8 @@ export default {
               });
           })
           .catch((err) => {
+            // console.log("error");
+            // console.log(err.response)
             this.$swal.close();
           });
       }

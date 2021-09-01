@@ -214,7 +214,7 @@
                   Jika belum diukur dengan Oxymeter, karena tidak ada, silakan
                   diisi dengan tanda minus ( - ) *
                 </label>
-                <input type="number" max="100" min="0" name="Saturasi" class="form-control required col-1 d-inline" id="saturasi" v-model="formPinjam.Saturasi"/>
+                <input type="number" max="100" min="0" name="Saturasi" class="form-control required col-4 col-sm-2 d-inline" id="saturasi" v-model="formPinjam.Saturasi"/>
                 <span>%</span>
               </div>
 
